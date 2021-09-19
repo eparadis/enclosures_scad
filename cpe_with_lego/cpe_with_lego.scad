@@ -1,30 +1,19 @@
 
+// see https://www.thingiverse.com/apps/customizer/run?thing_id=615256
+//     https://github.com/cfinke/LEGO.scad
+use <cust_lego.scad>;
 
 module case() {
     union() {
-        translate([0, 0, 4]) {
-            import("cp-box-case.stl"); // from https://www.thingiverse.com/thing:2585702/files
+        translate([0, 0, 3]) {
+            // from https://www.thingiverse.com/thing:2585702/files
+            // fixed with https://www.formware.co/onlinestlrepair
+            import("cp-box-case_fixed.stl"); 
         }
 
-        translate([47.81/-2, 4, 0]) {
-            union() {
-                k = 0.4; // "resize to 0.04 to be lego compatibilal (sic)"
-                scale([k, k, k]) {
-                    translate([0, 200, 0]) {
-                        rotate([90,0,0]) {
-                            import("plate_4x6.stl"); // from https://www.thingiverse.com/thing:671044/files 
-                        }
-                    }
-                }
-                translate([0, -20, 3]) {
-                    cube([47.81, 32, 2]);
-                }
-            }
-        }
+
+        block(width=8, length=8, height=0.33333333);
     }
-
-
 }
-
 
 case();
