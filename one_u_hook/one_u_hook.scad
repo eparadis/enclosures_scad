@@ -31,14 +31,18 @@ module SAS_Triangle_3D(s1, s2, a, h, valid) {
     }
 }
 module basic_shape() {
+    k = 2;
     color([ 1, 0.8, 0 ]) {
         difference() {
             union() {
                 cube([ 15.875, 5, 44 ], center = false);
                 translate([ 0, 0, 36 ]) {
                     rotate([ 0, 90, 0 ]) {
-                        SAS_Triangle_3D(29.25, 68, 90, 15.875, true);
+                        SAS_Triangle_3D(29.25+k, 68, 90, 15.875, true);
                     }
+                }
+                translate([0, 4, 5]) {
+                    cube([15.875, 5, 10], center = false);
                 }
             }
 
@@ -50,7 +54,7 @@ module basic_shape() {
                     screw_clearance();
                 }
                 shelf_cutout();
-                skeletonize_cutouts();
+                // skeletonize_cutouts();
             }
         }
     }
@@ -88,6 +92,11 @@ module shelf_cutout() {
             rotate([ 0, 90, 0 ]) {
                 cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
             }
+        }
+    }
+    translate([ 0-epsilon, 10-epsilon, 4 ]) {
+        rotate([ 0, 90, 0 ]) {
+            cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
         }
     }
 }
