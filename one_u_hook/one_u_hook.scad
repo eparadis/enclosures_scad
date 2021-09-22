@@ -4,6 +4,8 @@
 // see project: https://www.blockscad3d.com/community/projects/1244617
 // I printed their STL successfully
 
+epsilon = 0.001;
+
 module SAS_Triangle_3D(s1, s2, a, h, valid) {
     if (valid) {
         linear_extrude(height = h, twist = 0, center = false) polygon(
@@ -40,7 +42,9 @@ module basic_shape() {
             }
 
             union() {
-                translate([ (15.875 / 2), 0, 6.35 ]) { screw_clearance(); }
+                translate([ (15.875 / 2), 0, 6.35 ]) {
+                    screw_clearance();
+                }
                 translate([ (15.875 / 2), 0, (6.35 + 31.75) ]) {
                     screw_clearance();
                 }
@@ -73,14 +77,14 @@ module screw_clearance() {
 
 module shelf_cutout() {
     hull() {
-        translate([ 0, 10, (5 + 31.75) ]) {
+        translate([ 0-epsilon, 10, (5 + 31.75) ]) {
             rotate([ 0, 90, 0 ]) {
-                cylinder(r1 = 5, r2 = 5, h = 15.875, center = false);
+                cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
             }
         }
-        translate([ 0, 48, (5 + 31.75) ]) {
+        translate([ 0-epsilon, 48, (5 + 31.75) ]) {
             rotate([ 0, 90, 0 ]) {
-                cylinder(r1 = 5, r2 = 5, h = 15.875, center = false);
+                cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
             }
         }
     }
@@ -91,8 +95,8 @@ union() {
         basic_shape();
 
         color([ 0.93, 0, 0 ]) {
-            translate([ 0, 58, 30 ]) {
-                cube([ 15.875, 20, 10 ], center = false);
+            translate([ 0-epsilon, 58, 30 ]) {
+                cube([ 15.875+2*epsilon, 20, 10 ], center = false);
             }        
         }    
     }    
