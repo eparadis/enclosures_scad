@@ -97,8 +97,8 @@ union() {
         color([ 0.93, 0, 0 ]) {
             translate([ 0-epsilon, 58, 30 ]) {
                 cube([ 15.875+2*epsilon, 20, 10 ], center = false);
-            }        
-        }    
-    }    
+            }
+        }
+    }
     rounded_shelf_tip();
 }
