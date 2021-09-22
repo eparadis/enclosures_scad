@@ -4,7 +4,8 @@
 // see project: https://www.blockscad3d.com/community/projects/1244617
 // I printed their STL successfully
 
-epsilon = 0.001;
+epsilon = 0.01;
+$fn = 20;
 
 module SAS_Triangle_3D(s1, s2, a, h, valid) {
     if (valid) {
@@ -49,6 +50,7 @@ module basic_shape() {
                     screw_clearance();
                 }
                 shelf_cutout();
+                skeletonize_cutouts();
             }
         }
     }
@@ -86,6 +88,33 @@ module shelf_cutout() {
             rotate([ 0, 90, 0 ]) {
                 cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
             }
+        }
+    }
+}
+
+module skeletonize_cutouts() {
+    slope = 29.25 / 68; // rise over run
+    zstart = 17.5;
+    for (i=[0:2]) {
+        translate([ 0-epsilon, 10+10*i, zstart+slope*10*i ]) {
+            rotate([ 0, 90, 0 ]) {
+                cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
+            }
+        }
+    }
+    translate([ 0-epsilon, 12, 26 ]) {
+        rotate([ 0, 90, 0 ]) {
+            cylinder(r1 = 2.5, r2 = 2.5, h = 15.875+2*epsilon, center = false);
+        }
+    }
+    translate([ 0-epsilon, 23, 29 ]) {
+        rotate([ 0, 90, 0 ]) {
+            cylinder(r1 = 2, r2 = 2, h = 15.875+2*epsilon, center = false);
+        }
+    }
+    translate([ 0-epsilon, 10+10*3, zstart+slope*8*3 ]) {
+        rotate([ 0, 90, 0 ]) {
+            cylinder(r1 = 2.5, r2 = 2.5, h = 15.875+2*epsilon, center = false);
         }
     }
 }
