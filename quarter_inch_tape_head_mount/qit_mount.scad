@@ -40,18 +40,20 @@ module frame() {
             translate([-20, setback, -lift+21-3])
                 cube([40, 16, 3]); // ears
             translate([11, 6, -lift])
-                cube([12,12,12]);
+                cube([12,18,12]);
             translate([-23, 6, -lift])
-                cube([12,12,12]);
+                cube([12,18,12]);
+            translate([-23, 23, -lift])
+                cube([46, 15, 12]);
         }
         translate([15,12,15])
             cylinder(13, d=4); // pass through for positioning screw
         translate([-15,12,15])
             cylinder(13, d=4); // pass through for positioning screw
         translate([15,12,-1])
-            cylinder(13, d=3.5); // tapped hole for positioning screw
+            cylinder(13, d=3.6); // tapped hole for positioning screw
         translate([-15,12,-1])
-            cylinder(13, d=3.5); // tapped hole for positioning screw
+            cylinder(13, d=3.6); // tapped hole for positioning screw
     }
 }
 
