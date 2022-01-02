@@ -31,7 +31,7 @@ module frame() {
     // Ideally, mechanically adjustable...
     lift = 2;
     translate([-width/2,setback,-lift])
-        cube([width, 16, 20]);
+        cube([width, 16, 21]);
 }
 
 module wiring_access() {
