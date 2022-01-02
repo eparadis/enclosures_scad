@@ -13,7 +13,7 @@
 // the tracks on the head properly align with the tracks on the tape in the transport.
 // The second most important dimension is the azimuth alignment. On R2R you can generally
 // assume the tape is transported perfectly level due to the tape being bidirectional.
-// 
+//
 
 
 module tapehead_bb() {
@@ -32,6 +32,27 @@ module frame() {
     lift = 2;
     translate([-width/2,setback,-lift])
         cube([width, 16, 21]);
+
+    // mounting ears at the top of the frame
+    $fs = 0.2;
+    difference() {
+        union() {
+            translate([-20, setback, -lift+21-3])
+                cube([40, 16, 3]); // ears
+            translate([11, 6, -lift])
+                cube([12,12,12]);
+            translate([-23, 6, -lift])
+                cube([12,12,12]);
+        }
+        translate([15,12,15])
+            cylinder(13, d=4); // pass through for positioning screw
+        translate([-15,12,15])
+            cylinder(13, d=4); // pass through for positioning screw
+        translate([15,12,-1])
+            cylinder(13, d=3.5); // tapped hole for positioning screw
+        translate([-15,12,-1])
+            cylinder(13, d=3.5); // tapped hole for positioning screw
+    }
 }
 
 module wiring_access() {
