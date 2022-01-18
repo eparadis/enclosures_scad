@@ -1,8 +1,8 @@
+$fs=.5;
 
-
-module front_panel() {
+module front_panel(width=3) {
     translate([0,0,0])
-        cube([25*5, 30, 3]);
+        cube([width, 30, 3]);
 }
 
 module button_hole() {
@@ -22,23 +22,46 @@ module button_holes() {
     }
 }
 
+top_slope = 60;
+front_height = 15;
 
-top_slope = 40;
 
-difference() {
-    hull() {
-        translate([0, cos(90-top_slope)*3, 40])
-            rotate([top_slope, 0, 0])
+module side_support() {
+    hull()
+        union() {
+            translate([0, cos(90-top_slope)*3, front_height])
+                rotate([top_slope, 0, 0])
+                    front_panel();
+
+            scale([1, 2, 1])
                 front_panel();
-        scale([1, 1.5, 1])
-            front_panel();
+
+            translate([0, 3, 0])
+            scale([1, 1, (front_height + 3*cos(top_slope))/30])
+                rotate([90, 0, 0])
+                    front_panel();
     }
-
-    translate([0, 0, 40])
-        rotate([top_slope,0,0,])
-            button_holes();
-
-    translate([4, 4, 4])
-        cube([25*5-2*4, 1.5*30, 40-3]);
-
 }
+module ridge_for_faceplate() {
+    translate([0, cos(90-top_slope)*6, front_height-sin(90-top_slope)*3])
+        rotate([top_slope, 0, 0])
+            difference() {
+                scale([1, .9, 1])
+                    front_panel();
+                //translate([3, 3, -.01])
+                //    cylinder(5, d=3);
+            }
+}
+
+// left side
+side_support();
+translate([3 - .01, 0, 0])
+    ridge_for_faceplate();
+
+// right side
+translate([30, 0, 0])
+    side_support();
+translate([30 - 3 + .01, 0, 0])
+    ridge_for_faceplate();
+
+
