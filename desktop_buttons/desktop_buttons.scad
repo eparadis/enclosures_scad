@@ -42,26 +42,28 @@ module side_support() {
                     front_panel();
     }
 }
-module ridge_for_faceplate() {
+module ridge_for_faceplate(width=3) {
     translate([0, cos(90-top_slope)*6, front_height-sin(90-top_slope)*3])
         rotate([top_slope, 0, 0])
             difference() {
                 scale([1, .9, 1])
-                    front_panel();
-                //translate([3, 3, -.01])
-                //    cylinder(5, d=3);
+                    front_panel(width);
+                translate([width/2, 2, -.01])
+                    cylinder(5, d=2.2);
+                translate([width/2, 25, -.01])
+                    cylinder(5, d=2.2);
             }
 }
 
 // left side
 side_support();
 translate([3 - .01, 0, 0])
-    ridge_for_faceplate();
+    ridge_for_faceplate(5);
 
 // right side
 translate([30, 0, 0])
     side_support();
-translate([30 - 3 + .01, 0, 0])
-    ridge_for_faceplate();
+translate([30 - 5 + .01, 0, 0])
+    ridge_for_faceplate(5);
 
 
