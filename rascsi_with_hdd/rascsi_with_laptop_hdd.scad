@@ -10,6 +10,15 @@ edge_to_hole1 = 90.60;
 edge_to_hole2 = 14.00;
 height_to_holes = 3.00;
 
+// from PDFs here: https://www.raspberrypi.com/documentation/computers/raspberry-pi.html
+rpi_mt_shelf_dia = 6;
+rpi_mt_spacing_length = 58;
+rpi_mt_spacing_width = 49;
+rpi_length_of_board = 85;
+rpi_width_of_board = 56;
+rpi_mt_hold_dia = 2.75;
+clr_under_rpi = 3;
+
 // my specs
 support_width = 3;
 support_height = 10;
@@ -17,11 +26,30 @@ mt_screw_dia = 3;
 $fs = 0.1;
 clr_under_drive = 3;
 epsilon = 0.01;
+clr_drive_width = 0.05;
+
+module rpi_supports() {
+    // (rpi_length_of_board - rpi_mt_spacing_length) / 2
+    // rpi_mt_spacing_width/2
+    translate([rpi_mt_spacing_width/2, 0, 0])
+        rpi_supports_half();
+    translate([-rpi_mt_spacing_width/2, 0, 0])
+        rpi_supports_half();
+}
+
+module rpi_supports_half() {
+    translate([0, (rpi_length_of_board - rpi_mt_spacing_length) / 2, 0])
+        cylinder(h=clr_under_rpi, d=rpi_mt_shelf_dia);
+    translate([0, rpi_length_of_board - (rpi_length_of_board - rpi_mt_spacing_length) / 2, 0])
+        cylinder(h=clr_under_rpi, d=rpi_mt_shelf_dia);
+}
+
+
 
 module drive_supports() {
-    translate([width_of_drive/2, 0, 0])
+    translate([width_of_drive/2 + clr_drive_width, 0, 0])
         drive_support();
-    translate([-width_of_drive/2, 0, 0])
+    translate([-width_of_drive/2 - clr_drive_width, 0, 0])
         drive_support();
 }
 
@@ -37,11 +65,21 @@ module drive_support() {
     }
 }
 
-module rpi_supports() {
+union() {
+    translate([-width_of_drive/2 - 10, 0, 0])
+        drive_supports();
+    translate([rpi_width_of_board/2 + 10, 0, 0])
+        rpi_supports();
 }
 
 
-union() {
-    drive_supports();
-    rpi_supports();
+// mock up volumes of the drive and rpi to check fit
+module laptop_hdd() {
+    color("red")
+        cube([length_of_drive, width_of_drive, 15]);
+}
+
+module rpi123() {
+    color("yellow")
+        cube([rpi_length_of_board, rpi_width_of_board + 3, 16]);
 }
