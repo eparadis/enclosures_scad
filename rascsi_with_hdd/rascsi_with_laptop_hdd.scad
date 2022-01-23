@@ -16,8 +16,10 @@ rpi_mt_spacing_length = 58;
 rpi_mt_spacing_width = 49;
 rpi_length_of_board = 85;
 rpi_width_of_board = 56;
-rpi_mt_hold_dia = 2.75;
+rpi_mt_hole_dia = 2.75;
 clr_under_rpi = 3;
+clr_mt_stud = 0.05;
+mt_stud_height = 3;
 
 // my specs
 support_width = 3;
@@ -38,10 +40,14 @@ module rpi_supports() {
 }
 
 module rpi_supports_half() {
-    translate([0, (rpi_length_of_board - rpi_mt_spacing_length) / 2, 0])
+    translate([0, (rpi_length_of_board - rpi_mt_spacing_length) / 2, 0]) {
         cylinder(h=clr_under_rpi, d=rpi_mt_shelf_dia);
-    translate([0, rpi_length_of_board - (rpi_length_of_board - rpi_mt_spacing_length) / 2, 0])
+        cylinder(h=clr_under_rpi + mt_stud_height, d=rpi_mt_hole_dia - clr_mt_stud);
+    }
+    translate([0, rpi_length_of_board - (rpi_length_of_board - rpi_mt_spacing_length) / 2, 0]) {
         cylinder(h=clr_under_rpi, d=rpi_mt_shelf_dia);
+        cylinder(h=clr_under_rpi + mt_stud_height, d=rpi_mt_hole_dia - clr_mt_stud);
+    }
 }
 
 
