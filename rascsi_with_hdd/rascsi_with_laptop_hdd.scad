@@ -30,6 +30,14 @@ clr_drive_width = 0.05;
 clr_under_rpi = 3;
 clr_mt_stud = 0.05;
 mt_stud_height = 3;
+footing_width = 20+rpi_width_of_board+width_of_drive+support_width*1.5;
+footing_height = 3;
+
+module footing() {
+    cube([ footing_width, 20, footing_height]);
+    translate([0, rpi_length_of_board-20, 0])
+        cube([ footing_width, 20, footing_height]);
+}
 
 module rpi_supports() {
     // (rpi_length_of_board - rpi_mt_spacing_length) / 2
@@ -60,11 +68,11 @@ module drive_supports() {
 
 module drive_support() {
     difference() {
-        cube([support_width, length_of_drive, support_height]);
-        translate([-epsilon, edge_to_hole1, height_to_holes + clr_under_drive])
+        cube([support_width, length_of_drive, support_height+footing_height]);
+        translate([-epsilon, edge_to_hole1, height_to_holes + clr_under_drive+footing_height])
             rotate([0, 90, 0])
                 cylinder(10, d=mt_screw_dia);
-        translate([-epsilon, edge_to_hole2, height_to_holes + clr_under_drive])
+        translate([-epsilon, edge_to_hole2, height_to_holes + clr_under_drive+footing_height])
             rotate([0, 90, 0])
                 cylinder(10, d=mt_screw_dia);
     }
@@ -73,8 +81,11 @@ module drive_support() {
 union() {
     translate([-width_of_drive/2 - 10, 0, 0])
         drive_supports();
-    translate([rpi_width_of_board/2 + 10, 0, 0])
+    translate([rpi_width_of_board/2 + 10, 0, footing_height-epsilon])
         rpi_supports();
+    //20+rpi_width_of_board+width_of_drive+support_width*2
+    translate([ -(10+width_of_drive+support_width*1.5), 0, 0])
+        footing();
 }
 
 
@@ -89,9 +100,12 @@ module rpi123() {
         cube([rpi_width_of_board, rpi_length_of_board+3, 16]);
 }
 
-translate([-width_of_drive - 10 - support_width/2, 0, clr_under_drive])
-    laptop_hdd();
+module fit_check_volumes() {
+    translate([-width_of_drive - 10 - support_width/2, 0, clr_under_drive + footing_height])
+        laptop_hdd();
+    translate([10, 0, clr_under_rpi + footing_height])
+        rpi123();
+}
 
-translate([10, 0, clr_under_rpi])
-    rpi123();
+%fit_check_volumes();
 
