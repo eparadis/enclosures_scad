@@ -6,15 +6,16 @@ x1 = 0;
 x2 = 8;
 x3 = 10;
 x4 = 0.5 * (53-24);
-x5 = 53 / 2;
+x5 = x3 + 51 / 2;
 
 y1 = 0;
 y2 = 12;
-y3 = 39 - 9;
-y4 = 39;
-y5 = y4 + 10;
+y4 = 39+y2;
 
-extrusion = 10;
+y5 = y4 + 10;
+y3 = y4 - 9;
+
+extrusion = 8;
 hole_dia = 5;
 
 module half_clip_pos() {
