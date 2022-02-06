@@ -29,16 +29,59 @@ support_width = 3;
 //box_top_height = 20;
 mt_screw_dia = 3;
 clr_under_drive = 3;
+clr_above_drive = clr_under_drive;
 clr_drive_width = 0.05;
 clr_under_rpi = 3;
 //clr_mt_stud = 0.05;
 //mt_stud_height = 3;
 //lid_width = drive_width + 2*(support_width+clr_drive_width);
 //lid_length = drive_length + 2*support_width;
-lid_thickness = support_width / 2;
 
-case_top_offset = 30;
+
+case_top_offset = 30; // the bottom of the "top" of the case
 case_bottom_height = 25;
+case_inner_width = clr_drive_width*2 + drive_width;
+case_thickness = 2;
+case_outer_width = case_thickness*2 + case_inner_width;
+case_inner_length = drive_length + 2 + 2; // just some arbitrary clearance...
+case_outer_length = case_inner_length + case_thickness*2;
+case_inner_height = case_top_offset + clr_under_drive + drive_height + clr_above_drive - case_thickness;
+case_outer_height = case_inner_height + case_thickness*2;
+lid_thickness = case_thickness;
+
+module case_shell() {
+    difference() {
+        translate([ -(case_thickness+clr_drive_width),
+                    -(case_thickness),
+                    0 ])
+            cube([case_outer_width, case_outer_length, case_outer_height]);
+        translate([0,0, case_thickness])
+            cube([case_inner_width, case_inner_length, case_inner_height]);
+    }
+}
+
+module case_shell_bottom() {
+    difference() {
+        case_shell();
+        translate([-100, -100, case_top_offset+epsilon])
+            cube([200, 300, 200]);
+        translate([-6, 26.5, 13+clr_under_rpi + lid_thickness])
+            cube([19, 53.2, 12.5]);
+        translate([0, 0, clr_under_rpi + lid_thickness])
+                cube([rpi_board_width, 3, 16]);
+    }
+}
+
+module case_shell_top() {
+    difference() {
+        case_shell();
+        translate([-100, -100, -200+case_top_offset])
+            cube([200, 300, 200]);
+    }
+}
+
+color("lightgrey") translate([epsilon, epsilon, epsilon]) case_shell_bottom();
+//color("lightblue") case_shell_top();
 
 module rpi_supports() {
     translate([rpi_mt_spacing_width/2, 0, 0])
