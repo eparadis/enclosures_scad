@@ -3,7 +3,7 @@
 axis_height = 40.00; // the center of the lens should be this high off the XY plane
 
 // circular lenses
-lens_D = 18.11; // diameter
+lens_D = 30.00; // diameter
 lens_T = 3.09;  // edge thickness
 
 // lens size constraint
@@ -14,6 +14,8 @@ plane_h = axis_height + lens_D / 2 + 2; // 2mm above the lens
 plane_w = lens_D + 4; // 2mm on each side of the lens
 //plane_t = min(5, max(3, lens_T)); // no thiner than 3mm, no thicker than 5
 plane_t = 3;
+
+$fn = 100;
 
 module footing_slot() {
   width = 4;
@@ -33,18 +35,22 @@ module footing() {
   }
 }
 
+module label_text() {
+  text(text=str("D ", lens_D), size=5, font="DIN Alternate:style=Bold", halign="left", valign="baseline");
+}
+
 module label() {
   if( lens_D <= 30)
-  translate([lens_D/2+2,0,3])
-    linear_extrude(1)
-      text(text=str("Ø ", lens_D), size=5, font="DIN Alternate:style=Bold", halign="left", valign="center");
+  translate([lens_D / 2 + 2, -2.3 , 3])
+    linear_extrude(2, center=true, convexity=10)
+      label_text();
   else
     translate([axis_height - 3.5, -plane_w / 2, 3])
       rotate([0, 0, 90])
-        text(text=str("Ø ", lens_D), size=5, font="DIN Alternate:style=Bold", halign="left", valign="baseline");
+        linear_extrude(2, center=true, convexity=10)
+          label_text();
 }
 
-$fn = 100;
 difference() {
   union() {
     translate([-lens_D/2 - 2, -plane_w / 2, 0])
