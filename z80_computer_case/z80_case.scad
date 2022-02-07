@@ -60,12 +60,20 @@ module bottom_board_support(height) {
         }
 }
 
-module base_plate() {
-  cube([111.0 + 18.4, 92.8 + 51.5, 2]);
+module base_plate(height) {
+  w = 111.0 + 18.4;
+  h = 92.8 + 51.5;
+  difference() {
+    cube([w, h, height]);
+    translate([w/2, h/2, 0])
+      cylinder(d=w*.9, h=height*3, center=true);
+  }
+  cube([40, 55, height]);
 }
 
-lower_board_support_height = 3;
+base_plate_height = 2;
+lower_board_support_height = base_plate_height + 4;
 translate([111.0+18.4-100.0, 92.8+51.5-100.2, 0])
   bottom_board_support(lower_board_support_height);
 top_board_support(16.0 + lower_board_support_height);
-base_plate();
+base_plate(base_plate_height);
