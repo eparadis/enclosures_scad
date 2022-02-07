@@ -52,13 +52,13 @@ module bottom_board_support(height) {
     }
   
     for( i=[hole_offset, 100.0-hole_offset], j=[hole_offset, 100.2-hole_offset])
-      translate([i, j, 0])
+      translate([i, j, height/2])
         difference() {
           cylinder(h=height, d=support_dia, center=true);
           translate([0,0,-sigma])
-            cylinder(h=height+4*sigma, d=screw_hole_dia, center=true);
+            cylinder(h=height*3, d=screw_hole_dia, center=true);
         }
 }
 
-//bottom_board_support(3);
-top_board_support(6);
+bottom_board_support(3);
+//top_board_support(6);
