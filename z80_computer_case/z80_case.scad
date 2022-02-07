@@ -60,5 +60,7 @@ module bottom_board_support(height) {
         }
 }
 
-bottom_board_support(3);
-//top_board_support(6);
+lower_board_support_height = 3;
+translate([18.4, 51.5, 0])
+  bottom_board_support(lower_board_support_height);
+top_board_support(16.0 + lower_board_support_height);
