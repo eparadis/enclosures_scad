@@ -40,7 +40,7 @@ module bottom_board_support(height) {
   screw_hole_dia = 2.8; // TODO what should this be?
   
   hole_offset = (100.0-92.1)/2;
-  %color("green")
+  %color("darkgreen")
     translate([0,0,height])
     difference() {
       cube([100.0, 100.2, 1.6]);
