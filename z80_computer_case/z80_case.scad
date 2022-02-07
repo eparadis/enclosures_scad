@@ -60,7 +60,12 @@ module bottom_board_support(height) {
         }
 }
 
+module base_plate() {
+  cube([111.0 + 18.4, 92.8 + 51.5, 2]);
+}
+
 lower_board_support_height = 3;
-translate([18.4, 51.5, 0])
+translate([111.0+18.4-100.0, 92.8+51.5-100.2, 0])
   bottom_board_support(lower_board_support_height);
 top_board_support(16.0 + lower_board_support_height);
+base_plate();
