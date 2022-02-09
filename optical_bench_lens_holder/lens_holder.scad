@@ -3,8 +3,8 @@
 axis_height = 40.00; // the center of the lens should be this high off the XY plane
 
 // circular lenses
-lens_D = 30.00; // diameter
-lens_T = 3.09;  // edge thickness
+lens_D = 19.25; // diameter
+lens_T = 9.06;  // edge thickness
 
 // lens size constraint
 assert( lens_D/2 < (axis_height-3), "lens too large for specified optical axis height!");
@@ -41,11 +41,11 @@ module label_text() {
 
 module label() {
   if( lens_D <= 30)
-  translate([lens_D / 2 + 2, -2.3 , 3])
+  translate([lens_D / 2 + 2, -2.3 , plane_t])
     linear_extrude(2, center=true, convexity=10)
       label_text();
   else
-    translate([axis_height - 3.5, -plane_w / 2, 3])
+    translate([axis_height - 3.5, -plane_w / 2, plane_t])
       rotate([0, 0, 90])
         linear_extrude(2, center=true, convexity=10)
           label_text();
