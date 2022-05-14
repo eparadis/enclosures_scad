@@ -7,9 +7,8 @@ fit_clearance = 0.05;
 // diameter of the clip, the widest part that the inside of the bezel touches
 d2 = 34.56;
 
-
 // diameter of the crystal
-d3 = 30.65;
+d3 = 30.65 + 2*fit_clearance;
 
 // diameter closest to the body
 d1 = d2 - 2 * 0.35;
@@ -24,8 +23,7 @@ h2 = 1.65;
 h3 = 1.24;
 
 // diameter of flat face of body
-d4= 38.10;
-
+d4= 38.10 - 2*fit_clearance;
 
 $fa = 0.01;
 
