@@ -8,7 +8,7 @@ disc_width = 7;  // the disc-style surface width
 diameter = 100;  // diamter of the whole thing
 num_cutouts = 4; // the number of circular cutouts
 cutout_spacing = 6; // distance between cutouts
-press_fit_tol = 0.15;
+press_fit_tol = 0.2;
 axle_dia = 4.98 + press_fit_tol / 2 ;  // 4.98 as measured
 
 // precision-related
@@ -42,7 +42,7 @@ module cutouts() {
 }
 
 module inner_hub() {
-    hub_dia = 15;
+    hub_dia = 20;
     hub_height = 30;
 
     // both of these are from the TC560 handle project
