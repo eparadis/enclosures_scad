@@ -42,20 +42,40 @@ module cutouts() {
 }
 
 module inner_hub() {
-    translate([0,0,drum_width/2])
-    cylinder(h=drum_width, r=10, center = true);
+    hub_dia = 15;
+    hub_height = 30;
+
+    // both of these are from the TC560 handle project
+    set_screw_dia = 2.6; // press fit for M3 screw
+    set_screw_head_clr = 6.2;  // clearance for the head of the M3 screw
+    difference() {
+        translate([0,0,hub_height/2])
+            cylinder(h=hub_height, r=hub_dia/2, center = true);
+        translate([0, 0, hub_height / 2])
+            rotate([90, 0, 0])
+                cylinder(h=hub_dia*4, r=set_screw_dia/2, center=true);
+        translate([0, hub_dia/2, hub_height / 2])
+            rotate([90, 0, 0])
+                cylinder(h=hub_dia/2, r=set_screw_head_clr/2, center=true);
+        translate([0, -hub_dia/2, hub_height / 2])
+            rotate([90, 0, 0])
+                cylinder(h=hub_dia/2, r=set_screw_head_clr/2, center=true);
+    }
 }
 
 difference() {
     union() {
-        difference() {
-            body();
-            cutouts();
-        }
+        //difference() {
+        //    body();
+        //    cutouts();
+        //}
         inner_hub();
     }
 
     // the center axle hole
     translate([0,0,-drum_width/2])
-        cylinder(h=drum_width*4 + 2*eps, r=axle_dia/2, center=true);
+        cylinder(h=drum_width*400 + 2*eps, r=axle_dia/2, center=true);
+
+    // widen the bottom to avoid elephant foot
+    cylinder(h=3, r=(axle_dia/2)+1, center=true);
 }
