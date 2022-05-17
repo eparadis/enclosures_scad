@@ -8,7 +8,8 @@ disc_width = 7;  // the disc-style surface width
 diameter = 100;  // diamter of the whole thing
 num_cutouts = 4; // the number of circular cutouts
 cutout_spacing = 6; // distance between cutouts
-axle_dia = 4.98;  // as measured
+press_fit_tol = 0.15;
+axle_dia = 4.98 + press_fit_tol / 2 ;  // 4.98 as measured
 
 // precision-related
 eps = 0.01;
@@ -56,5 +57,5 @@ difference() {
 
     // the center axle hole
     translate([0,0,-drum_width/2])
-        cylinder(h=drum_width*4 + 2*eps, r=axle_dia, center=true);
+        cylinder(h=drum_width*4 + 2*eps, r=axle_dia/2, center=true);
 }
