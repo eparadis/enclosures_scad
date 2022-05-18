@@ -12,9 +12,7 @@ press_fit_tol = 0.3;
 axle_dia = 4.98 + press_fit_tol / 2 ;  // 4.98 as measured
 
 hub_dia = 20;
-hub_height = 15;
-
-
+hub_height = 20;
 
 // precision-related
 eps = 0.01;
@@ -65,16 +63,16 @@ module inner_hub() {
     difference() {
         translate([0,0,hub_height/2])
             cylinder(h=hub_height, r=hub_dia/2, center = true);
-        //hub_set_screws();
+        hub_set_screws();
     }
 }
 
 difference() {
     union() {
-        //difference() {
-        //    body();
-        //    cutouts();
-        //}
+        difference() {
+            body();
+            cutouts();
+        }
         inner_hub();
     }
 
