@@ -88,20 +88,23 @@ module disc() {
 
 module head_mount_holes(gap = 4, sweep = 15) {
     for (i=[0:6]) {
-        rotate([0, 0, i*sweep])
+        rotate([0, 0, i*sweep-90-45])
         translate([diameter/2 + gap, 0, 0])
         //cube(5, center=true);
         cylinder(10, d=3, center=true);
     }
 }
 
-difference() {
-    rotate([0, 0, 3*15])
-    translate([diameter *.6, 0, 0])
-    cube([diameter/2, diameter, 2], center=true);
-    head_mount_holes(gap=5);
-    head_mount_holes(gap=10);
-    head_mount_holes(gap=15);
+module head_mount() {
+    translate([-diameter/2, -diameter+20, 0])
+        cube([diameter, 3, 20]);
+    difference() {
+        translate([-diameter/2, -diameter+20, 0])
+        cube([diameter, diameter/2, 3]);
+        head_mount_holes(gap=5);
+        head_mount_holes(gap=10);
+        head_mount_holes(gap=15);
+    }
 }
 
 // bearing dimensions
@@ -129,4 +132,9 @@ translate([0, 0, 5]) {
 translate([0, 0, 30]) {
     color("yellow")
     stand();
+}
+
+translate([0, 0, 0]) {
+    color("red")
+    head_mount();
 }
