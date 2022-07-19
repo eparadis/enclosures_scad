@@ -67,19 +67,66 @@ module inner_hub() {
     }
 }
 
-difference() {
-    union() {
-        difference() {
-            body();
-            cutouts();
+module disc() {
+    difference() {
+        union() {
+            difference() {
+                body();
+                cutouts();
+            }
+            inner_hub();
         }
-        inner_hub();
+
+        // the center axle hole
+        translate([0,0,-drum_width/2])
+            cylinder(h=drum_width*400 + 2*eps, r=axle_dia/2, center=true);
+
+        // widen the bottom to avoid elephant foot
+        cylinder(h=3, r=(axle_dia/2)+1, center=true);
     }
+}
 
-    // the center axle hole
-    translate([0,0,-drum_width/2])
-        cylinder(h=drum_width*400 + 2*eps, r=axle_dia/2, center=true);
+module head_mount_holes(gap = 4, sweep = 15) {
+    for (i=[0:6]) {
+        rotate([0, 0, i*sweep])
+        translate([diameter/2 + gap, 0, 0])
+        //cube(5, center=true);
+        cylinder(10, d=3, center=true);
+    }
+}
 
-    // widen the bottom to avoid elephant foot
-    cylinder(h=3, r=(axle_dia/2)+1, center=true);
+difference() {
+    rotate([0, 0, 3*15])
+    translate([diameter *.6, 0, 0])
+    cube([diameter/2, diameter, 2], center=true);
+    head_mount_holes(gap=5);
+    head_mount_holes(gap=10);
+    head_mount_holes(gap=15);
+}
+
+// bearing dimensions
+// bore/ID = 5.0
+// OD = 16.0
+// width = 5.0
+module stand() {
+    thickness = 10;
+    difference() {
+        linear_extrude(thickness, center=false)
+        polygon([[10,10], [-10,10], [-40, -diameter/2-30], [40, -diameter/2-30]]);
+        cylinder(thickness*3, d=16, center=true);
+    }
+    difference() {
+        cylinder(5, d=18);
+        translate([0, 0, -eps])
+            cylinder(5+2*eps, d=14);
+    }
+}
+
+translate([0, 0, 5]) {
+    disc();
+}
+
+translate([0, 0, 30]) {
+    color("yellow")
+    stand();
 }
