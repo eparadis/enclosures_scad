@@ -66,6 +66,10 @@ module inner_hub() {
         hub_set_screws();
     }
 }
+module press_fit_fix() {
+    // widen the bottom to avoid elephant foot
+    cylinder(h=3, r=(axle_dia/2)+1, center=true);
+}
 
 module disc() {
     difference() {
@@ -81,8 +85,7 @@ module disc() {
         translate([0,0,-drum_width/2])
             cylinder(h=drum_width*400 + 2*eps, r=axle_dia/2, center=true);
 
-        // widen the bottom to avoid elephant foot
-        cylinder(h=3, r=(axle_dia/2)+1, center=true);
+        press_fit_fix();
     }
 }
 
@@ -107,6 +110,18 @@ module head_mount() {
     }
 }
 
+module mount_block() {
+    rotate([-90, 0, 0])
+        difference() {
+            cube([10, 10, 15],center=false);
+            translate([5, 5, -eps])
+                cylinder(15*3, d=4, center=true);
+            translate([5, 5, 10])
+                cylinder(11, d=7, center=true);
+        }
+}
+
+
 // "625" bearing dimensions
 // bore/ID = 5.0
 // OD = 16.0
@@ -119,16 +134,33 @@ module stand(bearing_size = "625") {
     module make_stand(b_ID, b_OD, b_w) {
         thickness = 10;
         a = b_OD/2+2;
+        b = -diameter/2-30;
         difference() {
             linear_extrude(thickness, center=false)
-            polygon([[a,a], [-a,a], [-40, -diameter/2-30], [40, -diameter/2-30]]);
+                polygon([[a,a], [-a,a], [-40, b], [40, b]]);
             cylinder(thickness*3, d=b_OD, center=true);
+            translate([0, b+5, -eps]) {
+                cylinder(thickness*3, d=axle_dia, center=true);
+                press_fit_fix();
+            }
+            translate([30, b+5, -eps]) {
+                cylinder(thickness*3, d=axle_dia, center=true);
+                press_fit_fix();
+            }
+            translate([-30, b+5, -eps]) {
+                cylinder(thickness*3, d=axle_dia, center=true);
+                press_fit_fix();
+            }
         }
         difference() {
             cylinder(thickness-b_w, d=b_OD+2);
             translate([0, 0, -eps])
-            cylinder(5+2*eps, d=b_OD-2);
+                cylinder(5+2*eps, d=b_OD-2);
         }
+        translate([10, b, thickness+10-eps])
+            mount_block();
+        translate([-20, b, thickness+10-eps])
+            mount_block();
     }
 
     if( bearing_size == "625") {
