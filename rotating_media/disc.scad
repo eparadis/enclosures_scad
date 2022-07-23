@@ -176,12 +176,11 @@ module stand(bearing_size = "625") {
                 cylinder(5+2*eps, d=b_OD-2);
         }
 
-
         if(adapter) {
             difference() {
-                cylinder(thickness, d=fit_ID, center=true);
+                cylinder(thickness, d=fit_ID);
                 translate([0, 0, -eps])
-                    cylinder(thickness*2, d=axle_dia, center=true);
+                    cylinder(thickness*3, d=axle_dia, center=true);
                 press_fit_fix();
             }
         }
