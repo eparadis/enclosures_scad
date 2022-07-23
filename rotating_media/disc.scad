@@ -107,21 +107,34 @@ module head_mount() {
     }
 }
 
-// bearing dimensions
+// "625" bearing dimensions
 // bore/ID = 5.0
 // OD = 16.0
 // width = 5.0
-module stand() {
-    thickness = 10;
-    difference() {
-        linear_extrude(thickness, center=false)
-        polygon([[10,10], [-10,10], [-40, -diameter/2-30], [40, -diameter/2-30]]);
-        cylinder(thickness*3, d=16, center=true);
+// "2809" bearing dimensions
+// bore/ID = 8.0
+// OD = 22.0
+// width = 7.0
+module stand(bearing_size = "625") {
+    module make_stand(b_ID, b_OD, b_w) {
+        thickness = 10;
+        a = b_OD/2+2;
+        difference() {
+            linear_extrude(thickness, center=false)
+            polygon([[a,a], [-a,a], [-40, -diameter/2-30], [40, -diameter/2-30]]);
+            cylinder(thickness*3, d=b_OD, center=true);
+        }
+        difference() {
+            cylinder(thickness-b_w, d=b_OD+2);
+            translate([0, 0, -eps])
+            cylinder(5+2*eps, d=b_OD-2);
+        }
     }
-    difference() {
-        cylinder(5, d=18);
-        translate([0, 0, -eps])
-            cylinder(5+2*eps, d=14);
+
+    if( bearing_size == "625") {
+        make_stand( 5.0, 16.0, 5.0);
+    } else if( bearing_size == "2809") {
+        make_stand( 8.0, 22.0, 7.0);
     }
 }
 
@@ -131,7 +144,12 @@ translate([0, 0, 5]) {
 
 translate([0, 0, 30]) {
     color("yellow")
-    stand();
+    stand("625");
+}
+
+translate([100, 0, 30]) {
+    color("orange")
+    stand("2809");
 }
 
 translate([0, 0, 0]) {
