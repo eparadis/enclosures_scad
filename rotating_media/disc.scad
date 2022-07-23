@@ -137,7 +137,7 @@ module stand(bearing_size = "625") {
     thickness = 10;
 
     module make_stand(b_ID, b_OD, b_w, adapter=false) {
-        fit_ID = b_ID + press_fit_tol;
+        fit_ID = b_ID - press_fit_tol;
         fit_OD = b_OD + press_fit_tol;
         a = b_OD/2+3;
         b = -diameter/2-30;
