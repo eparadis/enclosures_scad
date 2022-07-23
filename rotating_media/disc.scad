@@ -125,7 +125,6 @@ module mount_block() {
         }
 }
 
-
 // "625" bearing dimensions
 // bore/ID = 5.0
 // OD = 16.0
@@ -172,10 +171,6 @@ module stand(bearing_size = "625") {
             translate([0, 0, -eps])
                 cylinder(5+2*eps, d=b_OD-2);
         }
-        // translate([10, b, thickness+10-eps])
-        //     mount_block();
-        // translate([-20, b, thickness+10-eps])
-        //     mount_block();
     }
 
     if( bearing_size == "625") {
