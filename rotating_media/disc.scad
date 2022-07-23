@@ -180,8 +180,7 @@ module stand(bearing_size = "625") {
             difference() {
                 cylinder(thickness, d=fit_ID);
                 translate([0, 0, -eps])
-                    cylinder(thickness*3, d=axle_dia, center=true);
-                press_fit_fix();
+                    cylinder(thickness*3, d=axle_dia+press_fit_tol/2, center=true);
             }
         }
     }
