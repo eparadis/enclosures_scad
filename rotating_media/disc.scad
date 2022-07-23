@@ -136,7 +136,7 @@ module mount_block() {
 module stand(bearing_size = "625") {
     module make_stand(b_ID, b_OD, b_w) {
         thickness = 10;
-        a = b_OD/2+2;
+        a = b_OD/2+3;
         b = -diameter/2-30;
         difference() {
             linear_extrude(thickness, center=false)
@@ -158,7 +158,7 @@ module stand(bearing_size = "625") {
             translate([0,0,-eps])
                 linear_extrude(thickness+2*eps, center=false)
                     offset(r=5, delta=5, chamfer=false)
-                    polygon([[a, -b_OD/2-2-5], [-a, -b_OD/2-2-5], [-25, b+20], [25, b+20]]);
+                    polygon([[a-1, -b_OD/2-3-5], [-a+1, -b_OD/2-3-5], [-25, b+20], [25, b+20]]);
             translate([10, b, 10])
                 rotate([-90, 0, 0])
                     inset_bolt();
