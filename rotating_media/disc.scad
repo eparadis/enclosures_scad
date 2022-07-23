@@ -134,15 +134,18 @@ module mount_block() {
 // OD = 22.0
 // width = 7.0
 module stand(bearing_size = "625") {
-    module make_stand(b_ID, b_OD, b_w) {
-        thickness = 10;
+    thickness = 10;
+
+    module make_stand(b_ID, b_OD, b_w, adapter=false) {
+        fit_ID = b_ID + press_fit_tol / 2;
+        fit_OD = b_OD + press_fit_tol / 2;
         a = b_OD/2+3;
         b = -diameter/2-30;
         difference() {
             linear_extrude(thickness, center=false)
                 offset(r=5, delta=5, chamfer=false)
                 polygon([[a-5,a-5], [-a+5,a-5], [-40+5, b+5], [40-5, b+5]]);
-            cylinder(thickness*3, d=b_OD, center=true);
+            cylinder(thickness*3, d=fit_OD, center=true);
             translate([0, b+5, -eps]) {
                 cylinder(thickness*3, d=axle_dia, center=true);
                 press_fit_fix();
@@ -166,17 +169,28 @@ module stand(bearing_size = "625") {
                 rotate([-90, 0, 0])
                     inset_bolt();
         }
+        // step to press the bearing against to align it
         difference() {
             cylinder(thickness-b_w, d=b_OD+2);
             translate([0, 0, -eps])
                 cylinder(5+2*eps, d=b_OD-2);
         }
+
+
+        if(adapter) {
+            difference() {
+                cylinder(thickness, d=fit_ID, center=true);
+                translate([0, 0, -eps])
+                    cylinder(thickness*2, d=axle_dia, center=true);
+                press_fit_fix();
+            }
+        }
     }
 
     if( bearing_size == "625") {
-        make_stand( 5.0, 16.0, 5.0);
+        make_stand( 5.0, 16.0, 5.0, false);
     } else if( bearing_size == "2809") {
-        make_stand( 8.0, 22.0, 7.0);
+        make_stand( 8.0, 22.0, 7.0, true);
     }
 }
 
