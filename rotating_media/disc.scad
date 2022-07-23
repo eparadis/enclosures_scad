@@ -110,14 +110,18 @@ module head_mount() {
     }
 }
 
+module inset_bolt() {
+    translate([5, 5, -eps])
+        cylinder(15*3, d=4, center=true);
+    translate([5, 5, 10])
+        cylinder(11, d=7, center=true);
+}
+
 module mount_block() {
     rotate([-90, 0, 0])
         difference() {
             cube([10, 10, 15],center=false);
-            translate([5, 5, -eps])
-                cylinder(15*3, d=4, center=true);
-            translate([5, 5, 10])
-                cylinder(11, d=7, center=true);
+            inset_bolt();
         }
 }
 
@@ -137,7 +141,8 @@ module stand(bearing_size = "625") {
         b = -diameter/2-30;
         difference() {
             linear_extrude(thickness, center=false)
-                polygon([[a,a], [-a,a], [-40, b], [40, b]]);
+                offset(r=5, delta=5, chamfer=false)
+                polygon([[a-5,a-5], [-a+5,a-5], [-40+5, b+5], [40-5, b+5]]);
             cylinder(thickness*3, d=b_OD, center=true);
             translate([0, b+5, -eps]) {
                 cylinder(thickness*3, d=axle_dia, center=true);
@@ -151,16 +156,26 @@ module stand(bearing_size = "625") {
                 cylinder(thickness*3, d=axle_dia, center=true);
                 press_fit_fix();
             }
+            translate([0,0,-eps])
+                linear_extrude(thickness+2*eps, center=false)
+                    offset(r=5, delta=5, chamfer=false)
+                    polygon([[a, -b_OD/2-2-5], [-a, -b_OD/2-2-5], [-25, b+20], [25, b+20]]);
+            translate([10, b, 10])
+                rotate([-90, 0, 0])
+                    inset_bolt();
+            translate([-20, b, 10])
+                rotate([-90, 0, 0])
+                    inset_bolt();
         }
         difference() {
             cylinder(thickness-b_w, d=b_OD+2);
             translate([0, 0, -eps])
                 cylinder(5+2*eps, d=b_OD-2);
         }
-        translate([10, b, thickness+10-eps])
-            mount_block();
-        translate([-20, b, thickness+10-eps])
-            mount_block();
+        // translate([10, b, thickness+10-eps])
+        //     mount_block();
+        // translate([-20, b, thickness+10-eps])
+        //     mount_block();
     }
 
     if( bearing_size == "625") {
@@ -170,21 +185,21 @@ module stand(bearing_size = "625") {
     }
 }
 
-translate([0, 0, 5]) {
-    disc();
-}
+// translate([0, 0, 5]) {
+//     disc();
+// }
 
-translate([0, 0, 30]) {
-    color("yellow")
-    stand("625");
-}
+// translate([0, 0, 30]) {
+//     color("yellow")
+//     stand("625");
+// }
 
 translate([100, 0, 30]) {
     color("orange")
     stand("2809");
 }
 
-translate([0, 0, 0]) {
-    color("red")
-    head_mount();
-}
+// translate([0, 0, 0]) {
+//     color("red")
+//     head_mount();
+// }
