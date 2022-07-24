@@ -139,7 +139,7 @@ module stand(bearing_size = "625") {
     module make_stand(b_ID, b_OD, b_w, adapter=false) {
         fit_ID = b_ID - press_fit_tol / 2;
         fit_OD = b_OD + press_fit_tol;
-        a = b_OD/2+3;
+        a = b_OD <= 12 ? 12 : b_OD/2+3;
         b = -diameter/2-30;
         difference() {
             linear_extrude(thickness, center=false)
@@ -161,7 +161,7 @@ module stand(bearing_size = "625") {
             translate([0,0,-eps])
                 linear_extrude(thickness+2*eps, center=false)
                     offset(r=5, delta=5, chamfer=false)
-                    polygon([[a-1, -b_OD/2-3-5], [-a+1, -b_OD/2-3-5], [-25, b+20], [25, b+20]]);
+                    polygon([[a-1, -a-5], [-a+1, -a-5], [-25, b+20], [25, b+20]]);
             translate([10, b, 10])
                 rotate([-90, 0, 0])
                     inset_bolt();
@@ -189,6 +189,8 @@ module stand(bearing_size = "625") {
         make_stand( 5.0, 16.0, 5.0, false);
     } else if( bearing_size == "2809") {
         make_stand( 8.0, 22.0, 7.0, true);
+    } else if( bearing_size == "static_axle_5") {
+        make_stand( 0, 4.98, 10);
     }
 }
 
@@ -203,7 +205,7 @@ module stand(bearing_size = "625") {
 
 translate([100, 0, 30]) {
     color("orange")
-    stand("2809");
+    stand("static_axle_5");
 }
 
 // translate([0, 0, 0]) {
