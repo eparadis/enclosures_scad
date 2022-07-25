@@ -167,7 +167,8 @@ module stand(bearing_size = "625") {
             translate([0,0,-eps])
                 linear_extrude(thickness+2*eps, center=false)
                     offset(r=5, delta=5, chamfer=false)
-                    polygon([[a-1, -a-5], [-a+1, -a-5], [-25, b+20], [25, b+20]]);
+                    //       top right    top left      btm left     btm right
+                    polygon([[a-5, -a-5], [-a+5, -a-5], [-20, b+20], [20, b+20]]);
             // right mount bolt
             translate([10, b, 10])
                 rotate([-90, 0, 0])
