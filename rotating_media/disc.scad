@@ -142,29 +142,37 @@ module stand(bearing_size = "625") {
         a = b_OD <= 12 ? 12 : b_OD/2+3;
         b = -diameter/2-30;
         difference() {
+            // body, outside shape
             linear_extrude(thickness, center=false)
                 offset(r=5, delta=5, chamfer=false)
                 polygon([[a-5,a-5], [-a+5,a-5], [-40+5, b+5], [40-5, b+5]]);
+            // where the bearing presses in
             cylinder(thickness*3, d=fit_OD, center=true);
+            // center alignment guide
             translate([0, b+5, -eps]) {
                 cylinder(thickness*3, d=axle_dia, center=true);
                 press_fit_fix();
             }
+            // right alignment guide
             translate([30, b+5, -eps]) {
                 cylinder(thickness*3, d=axle_dia, center=true);
                 press_fit_fix();
             }
+            // left alignment guide
             translate([-30, b+5, -eps]) {
                 cylinder(thickness*3, d=axle_dia, center=true);
                 press_fit_fix();
             }
+            // center cutout, inner shape
             translate([0,0,-eps])
                 linear_extrude(thickness+2*eps, center=false)
                     offset(r=5, delta=5, chamfer=false)
                     polygon([[a-1, -a-5], [-a+1, -a-5], [-25, b+20], [25, b+20]]);
+            // right mount bolt
             translate([10, b, 10])
                 rotate([-90, 0, 0])
                     inset_bolt();
+            // left mount bolt
             translate([-20, b, 10])
                 rotate([-90, 0, 0])
                     inset_bolt();
@@ -176,6 +184,7 @@ module stand(bearing_size = "625") {
                 cylinder(5+2*eps, d=b_OD-2);
         }
 
+        // an axle-to-bearing adapter (works poorly)
         if(adapter) {
             difference() {
                 cylinder(thickness, d=fit_ID);
