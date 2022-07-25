@@ -177,6 +177,10 @@ module stand(bearing_size = "625") {
             translate([-20, b, 10])
                 rotate([-90, 0, 0])
                     inset_bolt();
+            // bearing/axle set screw
+            translate([0, 0, thickness / 2])
+                rotate([-90, 0, 0])
+                    cylinder(a+1, d=3, center=false);
         }
         // step to press the bearing against to align it
         difference() {
