@@ -42,7 +42,28 @@ module center_drum(thickness, diameter) {
 }
 
 module pulley(diameter) {
-    thickness = 5;
+    thickness = 4;
+    groove_width = 1.6;
+    difference() {
+        // body
+        cylinder(thickness, d=diameter, center=false);
+        // clearance for axle
+        cylinder(thickness*3, d=10, center=true);
+        // // holes to mount end cap
+        // for( rot = [0 : 360/6 : 360])
+        //     rotate([0,0, rot])
+        //     translate([bolt_pattern_radius, 0, -eps])
+        //         cylinder(h=thickness*3, d=3, center=true);
+        // groove for belt
+        rotate_extrude()
+            translate([diameter/2-1, thickness/2-groove_width/2, 0])
+            square([5, groove_width], center=false);
+    }
+}
+
+// this makes a flange with 6 recessed bolts
+// 
+module flange(thickness, diameter) {
     difference() {
         // body
         cylinder(thickness, d=diameter, center=false);
@@ -50,19 +71,25 @@ module pulley(diameter) {
         cylinder(thickness*3, d=10, center=true);
         // holes to mount end cap
         for( rot = [0 : 360/6 : 360])
-            rotate([0,0, rot])
-            translate([bolt_pattern_radius, 0, -eps])
-                cylinder(h=thickness*3, d=3, center=true);
-        rotate_extrude()
-            translate([diameter/2-1, thickness/3, 0])
-            square(thickness/3, center=false);
+            rotate([0,0, rot]) {
+                translate([bolt_pattern_radius, 0, -eps])
+                    cylinder(h=2+2*eps, d=3, center=false);
+                translate([bolt_pattern_radius, 0, 2])
+                    cylinder(h=thickness-2+2*eps, d=6, center=false);
+            }
     }
 }
 
-translate([0, 0, -50])
-    end_cap(7, 50);
+// translate([0, 0, -50])
+//     end_cap(7, 50);
 
-translate([0, 0, -25])
-    center_drum(15, 100);
+// translate([0, 0, -25])
+//     center_drum(15, 100);
 
-pulley(50);
+translate([0, 0, -75]) {
+    translate([0, 0, eps-6])
+        flange(6, 50);
+    pulley(20);
+}
+
+
