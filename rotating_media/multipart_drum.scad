@@ -1,13 +1,13 @@
 
 press_fit_tol = 0.3;
 bolt_pattern_radius = 18;
-b_OD = 16.0 + 0.3;
+b_OD = 16.0;
 
 // precision-related
 eps = 0.01;
 $fn = 100;
 
-function bearing_outer_fit() = 16.0 + press_fit_tol;
+function bearing_outer_fit() = b_OD + press_fit_tol;
 
 module end_cap(thickness, diameter) {
     difference() {
@@ -102,7 +102,7 @@ module end_cap_flange(thickness, diameter) {
     difference() {
         flange(thickness, diameter);
         translate([0, 0, 2])
-            cylinder(thickness, d=b_OD, center=false);
+            cylinder(thickness, d=bearing_outer_fit(), center=false);
 
     }
 }
