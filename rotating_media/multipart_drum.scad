@@ -1,6 +1,7 @@
 
 press_fit_tol = 0.3;
 bolt_pattern_radius = 18;
+b_OD = 16.0 + 0.3;
 
 // precision-related
 eps = 0.01;
@@ -97,8 +98,17 @@ module flange(thickness, diameter) {
     }
 }
 
-// translate([0, 0, -50])
-//     end_cap(7, 50);
+module end_cap_flange(thickness, diameter) {
+    difference() {
+        flange(thickness, diameter);
+        translate([0, 0, 2])
+            cylinder(thickness, d=b_OD, center=false);
+
+    }
+}
+
+translate([0, 0, -50])
+    end_cap_flange(7, 50);
 
 translate([0, 0, -25])
     center_drum(7, 100);
