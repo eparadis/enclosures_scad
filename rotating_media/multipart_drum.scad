@@ -27,9 +27,26 @@ module end_cap(thickness, diameter) {
 }
 
 module center_drum(thickness, diameter) {
+    // middle portion between hub and rim. the 'spokes' i guess
+    difference() {
+        // disc
+        cylinder(thickness/2, d=diameter, center=false);
+        // clearance for hub
+        cylinder(thickness*2, d=50-eps, center=true);
+        for( rot = [0 : 360/6 : 360])
+            rotate([0,0, rot+30])
+            translate([diameter/2*0.71, 0, -eps])
+                cylinder(h=thickness*3, d=20, center=true);
+    }
+    // the rim
+    difference() {
+        cylinder(thickness, d=diameter, center=false);
+        cylinder(thickness*3, d=diameter-thickness, center=true);
+    }
+    // the hub
     difference() {
         // body
-        cylinder(7, d=diameter, center=false);
+        cylinder(thickness, d=50, center=false);
         // hollow center
         translate([0, 0, -eps])
             cylinder(thickness+2*eps, d=16+24*.4, center=false);
@@ -83,8 +100,8 @@ module flange(thickness, diameter) {
 // translate([0, 0, -50])
 //     end_cap(7, 50);
 
-// translate([0, 0, -25])
-//     center_drum(15, 100);
+translate([0, 0, -25])
+    center_drum(7, 100);
 
 translate([0, 0, -75]) {
     translate([0, 0, eps-6])
