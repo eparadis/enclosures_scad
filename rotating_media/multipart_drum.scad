@@ -79,9 +79,9 @@ module pulley(diameter) {
     }
 }
 
-// this makes a flange with 6 recessed bolts
+// this makes a flange with 6 optionallyrecessed bolts
 // 
-module flange(thickness, diameter) {
+module flange(thickness, diameter, recessed=true) {
     difference() {
         // body
         cylinder(thickness, d=diameter, center=false);
@@ -90,17 +90,22 @@ module flange(thickness, diameter) {
         // holes to mount end cap
         for( rot = [0 : 360/6 : 360])
             rotate([0,0, rot]) {
+                if( recessed) {
                 translate([bolt_pattern_radius, 0, -eps])
                     cylinder(h=2+2*eps, d=3, center=false);
                 translate([bolt_pattern_radius, 0, 2])
                     cylinder(h=thickness-2+2*eps, d=6, center=false);
+                } else {
+                    translate([bolt_pattern_radius, 0, -eps])
+                        cylinder(h=thickness*3, d=3, center=false);
+                }
             }
     }
 }
 
-module end_cap_flange(thickness, diameter) {
+module end_cap_flange(thickness, diameter, recessed=true) {
     difference() {
-        flange(thickness, diameter);
+        flange(thickness, diameter, recessed);
         translate([0, 0, 2])
             cylinder(thickness, d=bearing_outer_fit(), center=false);
 
