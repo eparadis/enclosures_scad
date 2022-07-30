@@ -1,5 +1,5 @@
 
-press_fit_tol = 0.3;
+press_fit_tol = 0.2;
 bolt_pattern_radius = 18;
 b_OD = 16.0;
 
@@ -110,13 +110,13 @@ module end_cap_flange(thickness, diameter) {
 translate([0, 0, -50])
     end_cap_flange(7, 50);
 
-translate([0, 0, -25])
-    center_drum(7, 100);
+// translate([0, 0, -25])
+//     center_drum(7, 100);
 
-translate([0, 0, -75]) {
-    translate([0, 0, eps-6])
-        flange(6, 50);
-    pulley(20);
-}
+// translate([0, 0, -75]) {
+//     translate([0, 0, eps-6])
+//         flange(6, 50);
+//     pulley(20);
+// }
 
 
