@@ -4,7 +4,7 @@ axle_press_fit = 5;
 // precision-related
 eps = 0.01;
 $fn = 100;
-thread_M3 = 3.0; // diameter where an M3 will self thread 
+thread_M3 = 3.0; // diameter where an M3 will self thread
 
 module frame(diameter, thickness, axial_length, radial_width) {
     difference() {
@@ -72,6 +72,10 @@ module nortronics_adapter() {
         translate([5, 15, -eps])
             cylinder(15, d=thread_M3, center=true);
         translate([25, 15, -eps])
+            cylinder(5, d=thread_M3, center=true);
+        translate([5, 5, -eps])
+            cylinder(15, d=thread_M3, center=true);
+        translate([25, 5, -eps])
             cylinder(5, d=thread_M3, center=true);
         // slot
         hull(){
