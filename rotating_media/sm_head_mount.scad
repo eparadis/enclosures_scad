@@ -19,18 +19,19 @@ bracket_hole_spacing = 11.5;
 head_distance = 8;
 
 difference() {
+    base_thickness = 3;
     union() {
         // the base
-        cube([20, 10, 2]);
+        cube([20, 10, base_thickness]);
         // right support
         b = 20/2+bracket_hole_spacing/2-bracket_hole_dia;
-        translate([b, 0, 2-eps])
+        translate([b, 0, base_thickness-eps])
         cube([20-b, 10, height_offset]);
     }
 
     // left hole
     translate([20/2-bracket_hole_spacing/2, 10-8, 0])
-    cylinder(5, d=bracket_hole_dia, center= true);
+    cylinder(8, d=bracket_hole_dia, center= true);
 
     // right hole
     translate([20/2+bracket_hole_spacing/2, 10-8, 0])
