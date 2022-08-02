@@ -1,11 +1,11 @@
 
-press_fit_tol = 0.2;
+press_fit_tol = 0.0;
 bolt_pattern_radius = 18;
 b_OD = 16.0;
 
 // precision-related
 eps = 0.01;
-$fn = 100;
+$fn = $preview ? 64 : 128;
 
 function bearing_outer_fit() = b_OD + press_fit_tol;
 
@@ -84,7 +84,7 @@ module pulley(diameter) {
 module flange(thickness, diameter, recessed=true) {
     difference() {
         // body
-        cylinder(thickness, d=diameter, center=false);
+        cylinder(thickness, d=diameter, center=false, $fn = ($preview ? 64 : 256));
         // clearance for axle
         cylinder(thickness*3, d=10, center=true);
         // holes to mount end cap
