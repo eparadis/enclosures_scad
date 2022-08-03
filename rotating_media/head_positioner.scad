@@ -28,4 +28,17 @@ module frame() {
     }
 }
 
+module carriage() {
+    difference() {
+        cube([10/2, 8, 15]);
+        translate([10/4, -eps, 10/2])
+        rotate([-90,0,0])
+            cylinder(8+2*eps, d=3, center=false);
+    }
+}
+
 frame();
+
+color("red")
+translate([10/4, -20, 0])
+    carriage();
