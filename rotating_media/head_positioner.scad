@@ -53,7 +53,15 @@ module frame(frame_width = 15) {
 
 module carriage(frame_width=15) {
     difference() {
-        cube([frame_width/2, 8, 15]);
+        translate([-frame_width/4,0,10])
+            cube([frame_width, 8, 5]);
+        translate([0, 8/2, 10-eps])
+            cylinder(5+2*eps, d=3, center=false);
+        translate([frame_width/2, 8/2, 10-eps])
+            cylinder(5+2*eps, d=3, center=false);
+    }
+    difference() {
+        cube([frame_width/2, 8, 10+eps]);
         translate([frame_width/4, -eps, 10/2])
         rotate([-90,0,0])
             cylinder(8+2*eps, d=3, center=false);
