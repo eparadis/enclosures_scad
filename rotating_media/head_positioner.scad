@@ -16,7 +16,7 @@ module bolt_clearance() {
         cylinder(20, d=3+0.2, center=false);
 }
 
-module body() {
+module frame() {
     bolt_length = 2.91 + 19.96;
     difference() {
         cube([10, bolt_length, 10]);
@@ -28,4 +28,4 @@ module body() {
     }
 }
 
-body();
+frame();
