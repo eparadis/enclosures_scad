@@ -1,5 +1,5 @@
 
-press_fit_tol = 0.0;
+press_fit_tol = 0.1;
 bolt_pattern_radius = 18;
 b_OD = 16.0;
 
