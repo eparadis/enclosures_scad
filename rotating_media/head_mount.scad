@@ -90,6 +90,15 @@ module nortronics_adapter() {
 }
 
 use <multipart_drum.scad>
+use <head_positioner.scad>
+
+color("orange")
+translate([27.5, -58, -25])
+positioner_frame(15);
+
+color("darkorange")
+translate([31.25, -47, -25])
+positioner_carriage(15);
 
 color("blue")
 frame_with_adapter_mounts(50);
