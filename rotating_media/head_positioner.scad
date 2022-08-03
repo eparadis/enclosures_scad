@@ -16,29 +16,52 @@ module bolt_clearance() {
         cylinder(20, d=3+0.2, center=false);
 }
 
-module frame() {
+module frame(frame_width = 15) {
     bolt_length = 2.91 + 19.96;
+
+    module cap_mount() {
+        // holes to mount cap onto frame
+        translate([3/2+1, -eps, 10/4])
+        rotate([-90,0,0])
+            cylinder(5, d=3, center=false);
+        translate([frame_width-(3/2+1), -eps, 10-10/4])
+        rotate([-90,0,0])
+            cylinder(5, d=3, center=false);
+    }
+
     difference() {
-        cube([10, bolt_length, 10]);
-        translate([10/2, -eps, 10/2])
+        cube([frame_width, bolt_length, 10]);
+        translate([frame_width/2, -eps, 10/2])
         rotate([-90,0,0])
             bolt_clearance();
-        translate([10/4, 5, -eps])
-            cube([10/2, 15, 15]);
+        translate([frame_width/4, 5, -eps])
+            cube([frame_width/2, 15, 15]);
+        cap_mount();
+    }
+
+    // the cap
+    translate([0, -5, 0])
+    difference() {
+        cube([frame_width, 2, 10]);
+        // clearance for hex driver to turn bolt
+        translate([frame_width/2, -eps, 5])
+        rotate([-90,0,0])
+            cylinder(2+2*eps, d=3+0.2, center=false);
+        cap_mount();
     }
 }
 
-module carriage() {
+module carriage(frame_width=15) {
     difference() {
-        cube([10/2, 8, 15]);
-        translate([10/4, -eps, 10/2])
+        cube([frame_width/2, 8, 15]);
+        translate([frame_width/4, -eps, 10/2])
         rotate([-90,0,0])
             cylinder(8+2*eps, d=3, center=false);
     }
 }
 
-frame();
+frame(15);
 
 color("red")
-translate([10/4, -20, 0])
-    carriage();
+translate([15/4, -20, 0])
+    carriage(15);
