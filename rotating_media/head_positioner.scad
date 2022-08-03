@@ -16,8 +16,21 @@ module bolt_clearance() {
         cylinder(20, d=3+0.2, center=false);
 }
 
-module frame(frame_width = 15) {
+module positioner_frame(frame_width = 15) {
     bolt_length = 2.91 + 19.96;
+
+    module mounting_ears() {
+        translate([-frame_width/2, 20, 5])
+        difference() {
+            cube([frame_width*2, 10, 5]);
+            translate([10/2, 10/2, -eps ])
+                cylinder(10/2+2*eps, d=3, center=false);
+            translate([10/2+10, 10/2, -eps ])
+                cylinder(10/2+2*eps, d=3, center=false);
+            translate([10/2+20, 10/2, -eps ])
+                cylinder(10/2+2*eps, d=3, center=false);
+        }
+    }
 
     module cap_mount() {
         // holes to mount cap onto frame
@@ -30,7 +43,10 @@ module frame(frame_width = 15) {
     }
 
     difference() {
-        cube([frame_width, bolt_length, 10]);
+        union() {
+            cube([frame_width, bolt_length, 10]);
+            mounting_ears();
+        }
         translate([frame_width/2, -eps, 10/2])
         rotate([-90,0,0])
             bolt_clearance();
@@ -51,15 +67,20 @@ module frame(frame_width = 15) {
     }
 }
 
-module carriage(frame_width=15) {
+module positioner_carriage(frame_width=15) {
+    // the head
     difference() {
-        translate([-frame_width/4,0,10])
-            cube([frame_width, 8, 5]);
-        translate([0, 8/2, 10-eps])
+        translate([-30/2+frame_width/4,0,10])
+            cube([30, 8, 5]);
+        a = -6.25;
+        translate([a, 8/2, 10-eps])
             cylinder(5+2*eps, d=3, center=false);
-        translate([frame_width/2, 8/2, 10-eps])
+        translate([a+10, 8/2, 10-eps])
+            cylinder(5+2*eps, d=3, center=false);
+        translate([a+20, 8/2, 10-eps])
             cylinder(5+2*eps, d=3, center=false);
     }
+    // the slide
     difference() {
         cube([frame_width/2, 8, 10+eps]);
         translate([frame_width/4, -eps, 10/2])
@@ -68,8 +89,8 @@ module carriage(frame_width=15) {
     }
 }
 
-frame(15);
+positioner_frame(15);
 
 color("red")
-translate([15/4, -20, 0])
-    carriage(15);
+translate([15/4, -21, 0])
+    positioner_carriage(15);
