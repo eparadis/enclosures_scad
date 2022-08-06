@@ -89,6 +89,28 @@ module nortronics_adapter() {
     }
 }
 
+module arc_mount(diameter) {
+    rotate([90,0,90])
+    rotate_extrude(angle = 180, convexity = 2)
+    translate([diameter/2+3, 0, 0])
+    square(10, center=false);
+
+    module foot() {
+        translate([0,diameter/2+3, -10+eps])
+        difference() {
+            cube([30, 10, 10]);
+            for(i=[0:10:20])
+                translate([5+i, 5, -eps])
+                cylinder(10+2*eps, d=3, center=false);
+        }
+    }
+
+    mirror([0,1,0])
+    foot();
+
+    foot();
+}
+
 use <multipart_drum.scad>
 
 color("blue")
@@ -98,3 +120,7 @@ color("green")
 translate([30, 0, 0])
 rotate([0, 90, 0])
 center_drum(10, 50);
+
+color("DarkTurquoise")
+translate([10,0,0])
+arc_mount(50);
