@@ -90,10 +90,13 @@ module nortronics_adapter() {
 }
 
 module arc_mount(diameter) {
-    rotate([90,0,90])
-    rotate_extrude(angle = 180, convexity = 2)
-    translate([diameter/2+3, 0, 0])
-    square(10, center=false);
+    
+    module arc() {
+        rotate([90,0,90])
+        rotate_extrude(angle = 180, convexity = 2)
+        translate([diameter/2+3, 0, 0])
+        square([10, 5], center=false);
+    }
 
     module foot() {
         translate([0,diameter/2+3, -10+eps])
@@ -104,6 +107,29 @@ module arc_mount(diameter) {
                 cylinder(10+2*eps, d=3, center=false);
         }
     }
+
+    module perpendicular_mount_pattern() {
+        translate([-eps, 0, diameter/2+3+4])
+        rotate([0, 90, 0]) {
+            cylinder(15, d=3, center=false); // center
+            translate([0, -10, 0])
+                cylinder(15, d=3, center=false); // left
+            translate([0, 10, 0])
+                cylinder(15, d=3, center=false); // right
+        }
+        
+    }
+
+    difference() {
+        arc();
+        perpendicular_mount_pattern(); // center/top
+        rotate([60, 0, 0])
+            perpendicular_mount_pattern(); // left
+        rotate([-60, 0, 0])
+            perpendicular_mount_pattern(); // right
+    }
+
+    // perpendicular_mount_pattern();
 
     mirror([0,1,0])
     foot();
