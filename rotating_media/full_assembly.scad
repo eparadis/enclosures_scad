@@ -2,7 +2,7 @@
 // there are more than one configuration:
 // "opposing"
 // "arc"
-style = "opposing";
+style = "arc";
 
 // precision-related
 eps = 0.01;
@@ -54,4 +54,12 @@ end_cap_flange(7, 50);
 if(style=="opposing") {
     opposing_mounts();
     nortronics_head();
+} else if( style=="arc") {
+    for( i=[-30:-60:-150])
+        rotate([i, 0, 0])
+            nortronics_head();
+
+    color("DarkTurquoise")
+    translate([10,0,0])
+    arc_mount(50);
 }
