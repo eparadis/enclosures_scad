@@ -34,7 +34,7 @@ module opposing_mounts() {
 module nortronics_head() {
     // nortronics head bounding volume, more or less
     if($preview) {
-        color("yellow")
+        color("yellow", 0.5)
         translate([30, -42, -15.76/2])
         union() {
             cube([14.12, 16.47, 15.76]);
@@ -63,10 +63,16 @@ if(style=="opposing") {
     for( i=[-30:-60:-150]) {
         rotate([i, 0, 0])
             nortronics_head();
+
         rotate([i+90, 0, 0])
         translate([0, 7.5, 50+7])
         rotate([-90, 0, -90])
             positioner_frame_and_carriage();
+
+        color("red")
+        translate([15, 15, 47])
+        rotate([-90, 0, -90])
+            nortronics_adapter_right_angle();
     }
 
     color("DarkTurquoise")
