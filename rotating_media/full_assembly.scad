@@ -69,13 +69,13 @@ if(style=="opposing") {
             nortronics_head(drum_diameter);
 
         rotate([i+90, 0, 0])
-        translate([0, 7.5, drum_diameter==50? 50+7: 75+7])
+        translate([-eps, 7.5, drum_diameter==50? 50+7: 75+7])
         rotate([-90, 0, -90])
             positioner_frame_and_carriage();
 
         rotate([i+90, 0, 0])
         color("red")
-        translate([15, 15, drum_diameter==50? 47: 72])
+        translate([15+eps, 15, drum_diameter==50? 47: 72])
         rotate([-90, 0, -90])
             nortronics_adapter_right_angle();
     }
