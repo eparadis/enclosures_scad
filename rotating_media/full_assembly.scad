@@ -3,6 +3,7 @@
 // "opposing"
 // "arc"
 style = "arc";
+// style = "opposing";
 
 // precision-related
 eps = 0.01;
@@ -12,14 +13,18 @@ use <head_mount.scad>
 use <multipart_drum.scad>
 use <head_positioner.scad>
 
-module opposing_mounts() {
+module positioner_frame_and_carriage() {
     color("orange")
-    translate([27.5, -58, -25])
     positioner_frame(15);
 
     color("darkorange")
-    translate([31.25, -47, -25])
+    translate([3.75, 11, 0])
     positioner_carriage(15);
+}
+
+module opposing_mounts() {
+    translate([27.5, -58, -25])
+    positioner_frame_and_carriage();
 
     color("red")
     translate([20, -40+2 - 10, -10+eps])
@@ -55,11 +60,17 @@ if(style=="opposing") {
     opposing_mounts();
     nortronics_head();
 } else if( style=="arc") {
-    for( i=[-30:-60:-150])
+    for( i=[-30:-60:-150]) {
         rotate([i, 0, 0])
             nortronics_head();
+        rotate([i+90, 0, 0])
+        translate([0, 7.5, 50+7])
+        rotate([-90, 0, -90])
+            positioner_frame_and_carriage();
+    }
 
     color("DarkTurquoise")
     translate([10,0,0])
     arc_mount(50);
+
 }
