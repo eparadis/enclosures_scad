@@ -12,6 +12,7 @@ $fn = $preview ? 64 : 256;
 use <head_mount.scad>
 use <multipart_drum.scad>
 use <head_positioner.scad>
+use <nortronics_adapter.scad>
 
 module positioner_frame_and_carriage() {
     color("orange")
@@ -69,6 +70,7 @@ if(style=="opposing") {
         rotate([-90, 0, -90])
             positioner_frame_and_carriage();
 
+        rotate([i+90, 0, 0])
         color("red")
         translate([15, 15, 47])
         rotate([-90, 0, -90])
