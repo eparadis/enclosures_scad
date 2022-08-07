@@ -5,6 +5,8 @@
 style = "arc";
 // style = "opposing";
 
+drum_diameter = 100;
+
 // precision-related
 eps = 0.01;
 $fn = $preview ? 64 : 256;
@@ -23,20 +25,20 @@ module positioner_frame_and_carriage() {
     positioner_carriage(15);
 }
 
-module opposing_mounts() {
-    translate([27.5, -58, -25])
+module opposing_mounts(diameter) {
+    translate([27.5, diameter == 50? -58 : -83, -25])
     positioner_frame_and_carriage();
 
     color("red")
-    translate([20, -40+2 - 10, -10+eps])
+    translate([20, diameter==50? -40+2 - 10: -73, -10+eps])
         nortronics_adapter();
 }
 
-module nortronics_head() {
+module nortronics_head(diameter) {
     // nortronics head bounding volume, more or less
     if($preview) {
         color("yellow", 0.5)
-        translate([30, -42, -15.76/2])
+        translate([30, diameter == 50? -43 : -70, -15.76/2])
         union() {
             cube([14.12, 16.47, 15.76]);
             translate([-10, 2.25, 15.76/2])
@@ -50,35 +52,36 @@ module nortronics_head() {
 }
 
 color("blue")
-frame_with_adapter_mounts(50);
+frame_with_adapter_mounts(drum_diameter);
 
 color("green")
 translate([30, 0, 0])
 rotate([0, 90, 0])
-end_cap_flange(7, 50);
+center_drum(7, drum_diameter);
 
 if(style=="opposing") {
-    opposing_mounts();
-    nortronics_head();
+    opposing_mounts(drum_diameter);
+    nortronics_head(drum_diameter);
 } else if( style=="arc") {
-    for( i=[-30:-60:-150]) {
+    step = drum_diameter==50? -60 : -35;
+    for( i=[-30:step:-150]) {
         rotate([i, 0, 0])
-            nortronics_head();
+            nortronics_head(drum_diameter);
 
         rotate([i+90, 0, 0])
-        translate([0, 7.5, 50+7])
+        translate([0, 7.5, drum_diameter==50? 50+7: 75+7])
         rotate([-90, 0, -90])
             positioner_frame_and_carriage();
 
         rotate([i+90, 0, 0])
         color("red")
-        translate([15, 15, 47])
+        translate([15, 15, drum_diameter==50? 47: 72])
         rotate([-90, 0, -90])
             nortronics_adapter_right_angle();
     }
 
     color("DarkTurquoise")
     translate([10,0,0])
-    arc_mount(50);
+    arc_mount(drum_diameter);
 
 }
