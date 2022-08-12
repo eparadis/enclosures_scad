@@ -90,7 +90,7 @@ module arc_mount(diameter) {
 
     difference() {
         arc();
-        step = diameter==50? 60 : 35;
+        step =diameter==50? 60 : diameter==75? 40: 35;;
         for( i=[60:-step:-60]) {
             rotate([i, 0, 0])
                 perpendicular_mount_pattern(); // left

@@ -2,8 +2,6 @@
 // there are more than one configuration:
 // "opposing"
 // "arc"
-style = "arc";
-// style = "opposing";
 
 drum_diameter = 100;
 
@@ -34,11 +32,30 @@ module opposing_mounts(diameter) {
         nortronics_adapter();
 }
 
+module arc_mounts(diameter) {
+    step = diameter==50? 60 : diameter==75? 40: 35;
+    for( i=[-30:-step:-150]) {
+        rotate([i, 0, 0])
+            nortronics_head(diameter);
+
+        rotate([i+90, 0, 0])
+        translate([-eps, 7.5, diameter==50? 50+7: diameter==75? 62.5+7 : 75+7])
+        rotate([-90, 0, -90])
+            positioner_frame_and_carriage();
+
+        rotate([i+90, 0, 0])
+        color("red")
+        translate([15+eps, 15, diameter==50? 47: diameter==75? 59.5 : 72])
+        rotate([-90, 0, -90])
+            nortronics_adapter_right_angle();
+    }
+}
+
 module nortronics_head(diameter) {
     // nortronics head bounding volume, more or less
     if($preview) {
         color("yellow", 0.5)
-        translate([30, diameter == 50? -43 : -70, -15.76/2])
+        translate([30, diameter == 50? -43 : diameter==75? -55: -70, -15.76/2])
         union() {
             cube([14.12, 16.47, 15.76]);
             translate([-10, 2.25, 15.76/2])
@@ -51,37 +68,44 @@ module nortronics_head(diameter) {
     }
 }
 
-color("blue")
-frame_with_adapter_mounts(drum_diameter);
+module full_assembly_opposing(diameter) {
+    color("blue")
+    frame_with_adapter_mounts(diameter);
 
-color("green")
-translate([30, 0, 0])
-rotate([0, 90, 0])
-center_drum(7, drum_diameter);
+    color("green")
+    translate([30, 0, 0])
+    rotate([0, 90, 0])
+    center_drum(7, diameter);
 
-if(style=="opposing") {
-    opposing_mounts(drum_diameter);
-    nortronics_head(drum_diameter);
-} else if( style=="arc") {
-    step = drum_diameter==50? -60 : -35;
-    for( i=[-30:step:-150]) {
-        rotate([i, 0, 0])
-            nortronics_head(drum_diameter);
+    opposing_mounts(diameter);
+    nortronics_head(diameter);
+}
 
-        rotate([i+90, 0, 0])
-        translate([-eps, 7.5, drum_diameter==50? 50+7: 75+7])
-        rotate([-90, 0, -90])
-            positioner_frame_and_carriage();
+module full_assembly_arc(diameter) {
+    color("blue")
+    frame_with_adapter_mounts(diameter);
 
-        rotate([i+90, 0, 0])
-        color("red")
-        translate([15+eps, 15, drum_diameter==50? 47: 72])
-        rotate([-90, 0, -90])
-            nortronics_adapter_right_angle();
-    }
+    color("green")
+    translate([30, 0, 0])
+    rotate([0, 90, 0])
+    center_drum(7, diameter);
+
+    arc_mounts(diameter);
 
     color("DarkTurquoise")
     translate([10,0,0])
-    arc_mount(drum_diameter);
-
+    arc_mount(diameter);
 }
+
+diameters = [50, 75, 100];
+
+y = 0;
+for (d=diameters) {
+    y = (d-50)*6;
+    // translate([150, y, 0])
+    //     full_assembly_opposing(d);
+
+    translate([0, y, 0])
+        full_assembly_arc(d);
+}
+
