@@ -27,17 +27,28 @@ module end_cap(thickness, diameter) {
     }
 }
 
-module center_drum(thickness, diameter) {
+module center_drum(thickness, diameter, cutouts=false) {
     // middle portion between hub and rim. the 'spokes' i guess
     difference() {
         // disc
         cylinder(thickness/2, d=diameter, center=false);
         // clearance for hub
         cylinder(thickness*2, d=50-eps, center=true);
-        for( rot = [0 : 360/6 : 360])
-            rotate([0,0, rot+30])
-            translate([diameter/2*0.71, 0, -eps])
-                cylinder(h=thickness*3, d=20, center=true);
+        // cutouts
+        if(cutouts) {
+            rad_outer = (diameter/2-thickness/2);
+            rad_inner = 50/2;
+            rad_mid = (rad_inner+rad_outer)/2;
+            rad_mid_width = rad_outer - rad_inner;
+            circ_mid = 2*rad_mid*PI;
+            num_holes = floor(circ_mid/rad_mid_width)-2;
+            space_between_holes = (circ_mid - rad_mid_width*num_holes)/num_holes;
+            for( rot = [0 : 360/(space_between_holes<5? num_holes-2 : num_holes) : 360]) {
+                rotate([0,0, rot+30])
+                translate([rad_mid, 0, -eps])
+                    cylinder(h=thickness*3, d=rad_mid_width, center=true);
+            }
+        }
     }
     // the rim
     difference() {
