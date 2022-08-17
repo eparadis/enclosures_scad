@@ -33,7 +33,7 @@ module inner_spacer() {
         union() {
             flange(l, tube_ID-1, false);
             translate([0, 0, 8])
-                cylinder(l-2*6, d=tube_ID-1, false);
+                cylinder(l-2*8, d=tube_ID-1, false);
         }
         translate([0,0,-eps])
             cylinder(tube_lng, d=30, center=false);
