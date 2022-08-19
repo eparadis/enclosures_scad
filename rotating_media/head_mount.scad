@@ -135,7 +135,7 @@ module arc_mount(diameter) {
 
 use <multipart_drum.scad>
 
-color("blue")
+color("lightblue")
 frame_with_adapter_mounts(50);
 
 // color("green")
