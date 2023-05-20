@@ -7,7 +7,7 @@
 // 2. how much clearance should remain for a potential battery?
 // 
 
-front_face_width = 85;
+front_face_width = 88;
 depth = 90; // foot print depth
 front_face_height = 50;
 front_face_tilt = 15; // degrees from vertical
@@ -64,7 +64,7 @@ module screen_cutout() {
 
 module short_protoboard() {
   color("yellow")
-  translate([12, hull_thickness, 0]){
+  translate([12, hull_thickness, hull_thickness]){
     // the protoboard itself
     cube([56.6, 9.7, 84]);
     // the stack of modules in the center
