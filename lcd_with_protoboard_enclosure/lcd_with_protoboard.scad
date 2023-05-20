@@ -7,11 +7,11 @@
 // 2. how much clearance should remain for a potential battery?
 // 
 
-front_face_width = 88;
+hull_thickness = 2;
+front_face_width = (2*44.5) + 2*hull_thickness + 2*1; // fit two AAA batteries end-to-end, accounting for the hull on the sides and a little space for a spring connector
 depth = 90; // foot print depth
 front_face_height = 50;
 front_face_tilt = 15; // degrees from vertical
-hull_thickness = 2;
 top_depth = 20; // the depth of the flat surface on top
 lcd_bottom = 14; // how far from the bottom of the front face the LCD cutout sits
 
@@ -73,6 +73,11 @@ module short_protoboard() {
   }
 }
 
+module AAA_battery() {
+  color("red")
+  cylinder(h=44.5, d=10.5, center=false);
+}
+
 
 difference() {
   linear_extrude(height = front_face_width)
@@ -82,3 +87,7 @@ difference() {
 
 %screen_cutout();
 %short_protoboard();
+% translate([35, 35, 2]) AAA_battery();
+% translate([35, 35, 2+1+44.5]) AAA_battery();
+% translate([55, 20, 2]) AAA_battery();
+% translate([55, 20, 2+1+44.5]) AAA_battery();
