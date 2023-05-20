@@ -8,13 +8,11 @@
 // 
 
 front_face_width = 100;
+depth = 100; // foot print depth
+front_face_height = 40;
+front_face_tilt = 30; // degrees from vertical
 
 module side_profile() {
-  depth = 100; // foot print depth
-  front_face_height = 40;
-  front_face_tilt = 30; // degrees from vertical
-
-  
   points =[ [0,0], 
     [depth, 0],
     [sin(front_face_tilt)*front_face_height, cos(front_face_tilt)*front_face_height ]
@@ -23,5 +21,14 @@ module side_profile() {
   polygon(points = (points), convexity = 1);
 }
 
+module side_profile_hollow() {
+  difference() {
+    side_profile();
+    offset(r = -2)
+      side_profile();
+  }
+}
+
+
 linear_extrude(height = front_face_width)
-  side_profile();
+  side_profile_hollow();
