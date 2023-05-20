@@ -13,6 +13,7 @@ front_face_height = 50;
 front_face_tilt = 15; // degrees from vertical
 hull_thickness = 2;
 top_depth = 10; // the depth of the flat surface on top
+lcd_bottom = 14; // how far from the bottom of the front face the LCD cutout sits
 
 module side_profile() {
   points =[
@@ -42,7 +43,6 @@ module screen_cutout() {
   lcd_screen_depth = 6.86;
   lcd_pcb_height = 36;
   lcd_pcb_width = 80.5;
-  lcd_bottom = 10; // how far from the bottom of the front face the LCD cutout sits
   lcd_left = (front_face_width - lcd_width) / 2; // how far from the left side of the front face the LCD cutout sits
   cutout_depth = 21;
   color("green")
