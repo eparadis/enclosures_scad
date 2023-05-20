@@ -12,11 +12,14 @@ depth = 70; // foot print depth
 front_face_height = 50;
 front_face_tilt = 15; // degrees from vertical
 hull_thickness = 2;
+top_depth = 10; // the depth of the flat surface on top
 
 module side_profile() {
-  points =[ [0,0], 
+  points =[
+    [0,0], 
     [depth, 0],
-    [sin(front_face_tilt)*front_face_height, cos(front_face_tilt)*front_face_height ]
+    [sin(front_face_tilt)*front_face_height+top_depth, cos(front_face_tilt)*front_face_height],
+    [sin(front_face_tilt)*front_face_height, cos(front_face_tilt)*front_face_height],
   ];
 
   $fs = 0.01;
