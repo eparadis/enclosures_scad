@@ -12,7 +12,7 @@ depth = 90; // foot print depth
 front_face_height = 50;
 front_face_tilt = 15; // degrees from vertical
 hull_thickness = 2;
-top_depth = 10; // the depth of the flat surface on top
+top_depth = 20; // the depth of the flat surface on top
 lcd_bottom = 14; // how far from the bottom of the front face the LCD cutout sits
 
 module side_profile() {
