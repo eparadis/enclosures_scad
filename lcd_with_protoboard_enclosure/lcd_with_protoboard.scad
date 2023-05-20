@@ -8,7 +8,7 @@
 // 
 
 front_face_width = 100;
-depth = 100; // foot print depth
+depth = 70; // foot print depth
 front_face_height = 40;
 front_face_tilt = 15; // degrees from vertical
 
@@ -30,8 +30,8 @@ module side_profile_hollow() {
 }
 
 module screen_cutout() {
-  lcd_height = 20;
-  lcd_width = 60;
+  lcd_height = 24;
+  lcd_width = 69;
   lcd_bottom = 10; // how far from the bottom of the front face the LCD cutout sits
   lcd_left = (front_face_width - lcd_width) / 2; // how far from the left side of the front face the LCD cutout sits
   cutout_depth = 5;
