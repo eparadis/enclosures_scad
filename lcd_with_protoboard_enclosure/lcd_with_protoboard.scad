@@ -62,6 +62,17 @@ module screen_cutout() {
   }
 }
 
+module short_protoboard() {
+  color("yellow")
+  translate([12, hull_thickness, 0]){
+    // the protoboard itself
+    cube([56.6, 9.7, 84]);
+    // the stack of modules in the center
+    translate([20, 9.7, 15])
+      cube([16, 17, 43]); 
+  }
+}
+
 
 difference() {
   linear_extrude(height = front_face_width)
@@ -70,3 +81,4 @@ difference() {
 }
 
 %screen_cutout();
+%short_protoboard();
