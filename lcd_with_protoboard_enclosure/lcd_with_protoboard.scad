@@ -7,10 +7,11 @@
 // 2. how much clearance should remain for a potential battery?
 // 
 
-front_face_width = 100;
+front_face_width = 85;
 depth = 70; // foot print depth
 front_face_height = 40;
 front_face_tilt = 15; // degrees from vertical
+hull_thickness = 2;
 
 module side_profile() {
   points =[ [0,0], 
@@ -18,13 +19,16 @@ module side_profile() {
     [sin(front_face_tilt)*front_face_height, cos(front_face_tilt)*front_face_height ]
   ];
 
+  $fs = 0.01;
+  offset(r = hull_thickness)
+  offset(delta = -hull_thickness, chamfer=false)
   polygon(points = (points), convexity = 10);
 }
 
 module side_profile_hollow() {
   difference() {
     side_profile();
-    offset(r = -2)
+    offset(r = -hull_thickness)
       side_profile();
   }
 }
