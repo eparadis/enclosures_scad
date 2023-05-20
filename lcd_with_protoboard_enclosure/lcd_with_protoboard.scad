@@ -8,7 +8,7 @@
 // 
 
 front_face_width = 85;
-depth = 70; // foot print depth
+depth = 90; // foot print depth
 front_face_height = 50;
 front_face_tilt = 15; // degrees from vertical
 hull_thickness = 2;
