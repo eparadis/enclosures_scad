@@ -81,6 +81,11 @@ module AAA_battery() {
   cylinder(h=44.5, d=10.5, center=false);
 }
 
+module two_AAA_batteries() {
+  AAA_battery();
+  translate([0, 0, 1+44.5]) AAA_battery();
+}
+
 
 difference() {
   linear_extrude(height = front_face_width)
@@ -90,7 +95,46 @@ difference() {
 
 %screen_cutout();
 %short_protoboard();
-% translate([35, 35, 2]) AAA_battery();
-% translate([35, 35, 2+1+44.5]) AAA_battery();
-% translate([55, 20, 2]) AAA_battery();
-% translate([55, 20, 2+1+44.5]) AAA_battery();
+
+// this is the angle of the rear slope. actually locating further it is beyond my comprehension
+// it has to do with the use of offset()
+theta = atan2(-cos(front_face_tilt)*front_face_height, depth-top_depth-sin(front_face_tilt)*front_face_height);
+
+a = 30;
+
+translate([depth-14, 0, 0]) 
+rotate([0, 0, theta])
+translate([-25, 2, 0])
+two_AAA_batteries();
+
+translate([depth-14, 0, 0]) 
+rotate([0, 0, theta])
+translate([-55, 2, 0])
+two_AAA_batteries();
+
+
+// cube(10);
+//  translate([depth-a, 20,0]) rotate([0, 0, theta+180]) cube(10);
+// translate([depth-a, 0,2]) rotate([0, 0, theta]) translate([-(depth-a), 0, -2]) cube(10); //two_AAA_batteries();
+
+
+// % translate([55, 0, 2]) two_AAA_batteries();
+
+
+// locating the rear lower inside corner
+// does not work. not only does it depend on `depth` and `hull_thickness`, but it also depends on `top_depth`!!
+// // x1 = depth + (2.31*hull_thickness)/tan(theta); // depth = 90, top_depth = 20
+// // x1 = depth + (2.23236*hull_thickness)/tan(theta); // depth = 100, top_depth = 20
+// // x1 = depth + (2.14357*hull_thickness)/tan(theta); // depth = 120, top_depth = 20
+// // x1 = depth + (2.09705*hull_thickness)/tan(theta); // depth = 140, top_depth = 20
+// y1 = hull_thickness-1;
+// % translate([x1, y1, 0]) rotate([0,0,0]) cube([1,10,100]);
+
+// locating the inside front lower corner. seems to always work
+// x2 = (4.8637*hull_thickness)/tan(90-front_face_tilt);
+// y2 = hull_thickness-1;
+// % translate([x2, y2, 0]) rotate([0,0,0]) cube([1,10,100]);
+
+
+// originally written with OpenSCAD version 2022.08.01 (git ea8950bd3)
+
