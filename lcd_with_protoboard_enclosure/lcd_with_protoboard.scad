@@ -103,11 +103,11 @@ module place_on_back_surface(u, v) {
    children();
 }
 
-%place_on_back_surface(28, 12)
+%place_on_back_surface(27, 12)
   translate([0, 0, 2])
   two_AAA_batteries();
 
-%place_on_back_surface(58, 12)
+%place_on_back_surface(38, 12)
   translate([0, 0, 2])
   two_AAA_batteries();
 
