@@ -15,25 +15,28 @@ front_face_tilt = 15; // degrees from vertical
 top_depth = 20; // the depth of the flat surface on top
 lcd_bottom = 14; // how far from the bottom of the front face the LCD cutout sits
 
-module side_profile() {
+module side_profile_trivial() {
   points =[
     [0,0], 
     [depth, 0],
     [sin(front_face_tilt)*front_face_height+top_depth, cos(front_face_tilt)*front_face_height],
     [sin(front_face_tilt)*front_face_height, cos(front_face_tilt)*front_face_height],
   ];
+  polygon(points = (points), convexity = 10);
+}
 
+module side_profile() {
   $fs = 0.01;
   offset(r = hull_thickness)
   offset(delta = -hull_thickness, chamfer=false)
-  polygon(points = (points), convexity = 10);
+  side_profile_trivial();
 }
 
 module side_profile_hollow() {
   difference() {
     side_profile();
-    offset(r = -hull_thickness)
-      side_profile();
+    offset(delta = -hull_thickness)
+      side_profile_trivial();
   }
 }
 
