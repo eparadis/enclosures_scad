@@ -12,7 +12,7 @@ eyepiece_ID = 21.7;
 eyepiece_inner_clr = 6.31;
 eyepiece_outer_clr = 22.1;
 
-// approx spacing between end of tubes is 40mm
+// approx spacing between end of tubes is 40mm ("freespace gap")
 // max clearance would then be ~70mm
 
 /*
@@ -27,15 +27,27 @@ eyepiece_outer_clr = 22.1;
 (diagram not to scale)
 */
 
-// TODO
-// 1. taper outside to save material
-// 2. reverse taper inside to increase optical freespace
-// 3. ensure flat surface for mating with ID of projector lens
-// 4. ensure flat surface for mating with OD of eyepiece
-// 5. consider method to change length for focusing
-// as-is, this takes 21.4g / 7m of filament and 1h16m to print
-difference() {
-    $fa=1;
-    cylinder(h=60, r=proj_lens_ID/2);
-    cylinder(h=60+2*eps, r=eyepiece_OD/2);
+module profile() {
+    thickness = 2;
+    freespace_gap = 40;
+    proj_lens_flat_surface = proj_lens_inner_clr / 2;
+    eyepiece_flat_surface = eyepiece_outer_clr / 2;
+    points = [
+        [-proj_lens_ID/2, 0],
+        [-proj_lens_ID/2 + thickness, 0],
+        [-eyepiece_OD/2, proj_lens_flat_surface+freespace_gap],
+        [-eyepiece_OD/2, proj_lens_flat_surface+freespace_gap+eyepiece_flat_surface],
+        [-eyepiece_OD/2-thickness, proj_lens_flat_surface+freespace_gap+eyepiece_flat_surface],
+        [-proj_lens_ID/2, proj_lens_flat_surface]
+    ];
+
+    polygon(points);
 }
+
+
+// TODO
+// 1. consider method to change length for focusing
+// as-is, this takes 21.4g / 7m of filament and 1h16m to print
+$fa=1;
+rotate_extrude()
+    profile();
