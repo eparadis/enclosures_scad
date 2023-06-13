@@ -4,7 +4,7 @@ axle_dia = 4.98 + press_fit_tol / 2 ;  // 4.98 as measured
 
 
 // precision-related
-eps = 0.01;
+eps = 0.02;
 $fn = 100;
 
 include <common.scad>
@@ -29,7 +29,11 @@ module stand(bearing_size = "625") {
             // body, outside shape
             linear_extrude(thickness, center=false)
                 offset(r=5, delta=5, chamfer=false)
-                polygon([[a-5,a-5], [-a+5,a-5], [-40+5, b+5], [40-5, b+5]]);
+                if( upper_mounting)
+                    //       top right   top left     btm left      btm right
+                    polygon([[a-2,a-10], [-a+2,a-10], [-40+5, b+5], [40-5, b+5]]);
+                else
+                    polygon([[a-5,a-5], [-a+5,a-5], [-40+5, b+5], [40-5, b+5]]);
             // where the bearing presses in
             cylinder(thickness*3, d=fit_OD, center=true);
             // center alignment guide
@@ -48,11 +52,14 @@ module stand(bearing_size = "625") {
                 press_fit_fix();
             }
             // center cutout, inner shape
-            translate([0,0,-eps])
-                linear_extrude(thickness+2*eps, center=false)
+            translate([0,0,-2*eps])
+                linear_extrude(thickness+4*eps, center=false)
                     offset(r=5, delta=5, chamfer=false)
-                    //       top right    top left      btm left     btm right
-                    polygon([[a-5, -a-5], [-a+5, -a-5], [-20, b+20], [20, b+20]]);
+                    if(upper_mounting)
+                    //           top right    top left      btm left     btm right
+                        polygon([[a-6, -a-0], [-a+6, -a-0], [-20, b+20], [20, b+20]]);
+                    else
+                        polygon([[a-5, -a-5], [-a+5, -a-5], [-20, b+20], [20, b+20]]);
             // right mount bolt
             translate([10, b, 0])
                     inset_bolt();
