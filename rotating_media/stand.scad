@@ -73,8 +73,9 @@ module stand(bearing_size = "625") {
         }
         // step to press the bearing against to align it
         difference() {
-            cylinder(thickness-b_w, d=b_OD+2);
-            translate([0, 0, -eps])
+            translate([0, 0, thickness/2])
+              cylinder(thickness-b_w, d=b_OD+2);
+            translate([0, 0, thickness/2-eps])
                 cylinder(5+2*eps, d=b_OD-2);
         }
 
