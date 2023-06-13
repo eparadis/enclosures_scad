@@ -20,10 +20,10 @@ include <common.scad>
 module stand(bearing_size = "625") {
     thickness = 10;
 
-    module make_stand(b_ID, b_OD, b_w, adapter=false) {
+    module make_stand(b_ID, b_OD, b_w, adapter=false, upper_mounting=false) {
         fit_ID = b_ID - press_fit_tol / 2;
         fit_OD = b_OD + press_fit_tol;
-        a = b_OD <= 12 ? 12 : b_OD/2+3;
+        a = (b_OD <= 12 ? 12 : b_OD/2+3) * (upper_mounting ? 1.5 : 1.0);
         b = -diameter/2-30;
         difference() {
             // body, outside shape
@@ -54,17 +54,22 @@ module stand(bearing_size = "625") {
                     //       top right    top left      btm left     btm right
                     polygon([[a-5, -a-5], [-a+5, -a-5], [-20, b+20], [20, b+20]]);
             // right mount bolt
-            translate([10, b, 10])
-                rotate([-90, 0, 0])
+            translate([10, b, 0])
                     inset_bolt();
             // left mount bolt
-            translate([-20, b, 10])
-                rotate([-90, 0, 0])
+            translate([-20, b, 0])
                     inset_bolt();
             // bearing/axle set screw
             translate([0, 0, thickness / 2])
                 rotate([-90, 0, 0])
                     cylinder(a+1, d=2.9, center=false);
+            // upper mounting holes for attaching a fixed head frame
+            if( upper_mounting ) {
+                translate([-5-15, -5, 0])
+                    inset_bolt();
+                translate([-5+15, -5, 0])
+                    inset_bolt();
+            }
         }
         // step to press the bearing against to align it
         difference() {
@@ -89,6 +94,8 @@ module stand(bearing_size = "625") {
         make_stand( 8.0, 22.0, 7.0, true);
     } else if( bearing_size == "static_axle_5") {
         make_stand( 0, 4.98, 10);
+    } else if( bearing_size == "625v2") {
+        make_stand( 5.0, 16.0, 5.0, false, true);
     }
 }
 
@@ -100,4 +107,9 @@ translate([0, 0, 30]) {
 translate([100, 0, 30]) {
     color("orange")
     stand("static_axle_5");
+}
+
+translate([200, 0, 30]) {
+    color("green")
+    stand("625v2");
 }
