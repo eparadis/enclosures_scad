@@ -123,16 +123,18 @@ module end_cap_flange(thickness, diameter, recessed=true) {
     }
 }
 
+color("green")
 translate([0, 0, -50])
     end_cap_flange(7, 50);
 
-// translate([0, 0, -25])
-//     center_drum(7, 100);
+color("lightgreen")
+translate([0, 0, -25])
+    center_drum(7, 100);
 
-// translate([0, 0, -75]) {
-//     translate([0, 0, eps-6])
-//         flange(6, 50);
-//     pulley(20);
-// }
-
+color("pink")
+translate([0, 0, -75]) {
+    translate([0, 0, eps-6])
+        flange(6, 50);
+    pulley(20);
+}
 
