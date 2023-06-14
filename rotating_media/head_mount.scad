@@ -6,6 +6,7 @@ eps = 0.01;
 $fn = 100;
 thread_M3 = 3.0; // diameter where an M3 will self thread
 cap_M3 = 6.0; // diameter where the head of an M3 will fit inside for counter sinking
+horiz_thread_M3 = thread_M3 - 0.1; // horizontal holes need to smaller to properly thread. May need adjustment
 
 module frame(diameter, thickness, axial_length, radial_width, attached_to_frame) {
     difference() {
@@ -29,9 +30,9 @@ module frame(diameter, thickness, axial_length, radial_width, attached_to_frame)
                 cylinder(thickness*10, d=thread_M3, center=false);
             // mounting screws
             translate([thickness/2, thickness/2, -eps])
-                cylinder(thickness*10, d=thread_M3, center=false);
+                cylinder(thickness*10, d=horiz_thread_M3, center=false);
             translate([thickness/2, thickness/2+2*thickness, -eps])
-                cylinder(thickness*10, d=thread_M3, center=false);
+                cylinder(thickness*10, d=horiz_thread_M3, center=false);
             // mounting screw counter sinks
             translate([thickness/2, thickness/2, thickness])
                 cylinder(thickness/2+eps, d=cap_M3, center=false);
