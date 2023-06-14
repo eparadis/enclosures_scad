@@ -7,7 +7,7 @@ $fn = 100;
 thread_M3 = 3.0; // diameter where an M3 will self thread
 cap_M3 = 6.0; // diameter where the head of an M3 will fit inside for counter sinking
 
-module frame(diameter, thickness, axial_length, radial_width) {
+module frame(diameter, thickness, axial_length, radial_width, attached_to_frame) {
     difference() {
         // outside
         cube([axial_length, radial_width, thickness]);
@@ -40,7 +40,26 @@ module frame(diameter, thickness, axial_length, radial_width) {
         }
     }
 
-    module axle_mount() {
+    module frame_mount_full() {
+        // the frame mounts are 30mm offset
+        difference() {
+            // body
+            cube([thickness, thickness*4, thickness*1.2]);
+            // hole for axle to pass through
+            translate([-eps, thickness/2+thickness*1.5, thickness/2])
+            rotate([0, 90, 0])
+                cylinder(thickness+2*eps, d=axle_press_fit*1.5, center=false);
+            // holes to mount to frame
+            translate([-eps, thickness/2, thickness/2])
+            rotate([0, 90, 0])
+                cylinder(thickness*10, d=thread_M3, center=false);
+            translate([-eps, thickness/2+30, thickness/2])
+            rotate([0, 90, 0])
+                cylinder(thickness*10, d=thread_M3, center=false);
+        }
+    }
+
+    module split_axle_mount() {
         // bottom half
         difference() {
             axle_mount_full();
@@ -57,22 +76,32 @@ module frame(diameter, thickness, axial_length, radial_width) {
         }
     }
 
-    // left axle mount
-    translate([0, radial_width/2-thickness/2-thickness, thickness-eps])
-        axle_mount();
-    // right axle mount
-    translate([axial_length-thickness, radial_width/2-thickness/2-thickness, thickness-eps])
-        axle_mount();
+    if(!attached_to_frame) {
+        // left axle mount
+        translate([0, radial_width/2-thickness/2-thickness, thickness-eps])
+            split_axle_mount();
+        // right axle mount
+        translate([axial_length-thickness, radial_width/2-thickness/2-thickness, thickness-eps])
+            split_axle_mount();
+    } else {
+        // left frame mount
+        translate([0, radial_width/2-thickness*2, thickness-eps])
+            frame_mount_full();
+        //right frame mount
+        translate([axial_length-thickness, radial_width/2-thickness*2, thickness-eps])
+            frame_mount_full();
+    }
 }
-module frame_with_adapter_mounts(diameter) {
+
+module frame_with_adapter_mounts(diameter, attached_to_frame=false) {
     thickness = 10;
     distance_above_cylinder = 3;
-    axial_length = 100+10+10;
+    axial_length = 100+thickness*2; // 100mm inside, 10mm on each end for the frame
     radial_width = diameter + thickness*2 + distance_above_cylinder * 2;
     mount_spacing = 10; // dist between mounting holes
     translate([0, -radial_width/2, -thickness*1.5])
     difference() {
-        frame(50, thickness, axial_length, radial_width);
+        frame(50, thickness, axial_length, radial_width, attached_to_frame);
         for (axl_offset=[0:mount_spacing:(axial_length-30)]) {
             translate([axl_offset+thickness+mount_spacing/2, thickness/2, -eps]) {
                 cylinder(thickness+2*eps, d=thread_M3, center=false);
@@ -137,6 +166,10 @@ use <multipart_drum.scad>
 
 color("lightblue")
 frame_with_adapter_mounts(50);
+
+color("lightgreen")
+translate([0, 100, 0])
+    frame_with_adapter_mounts(50, true);
 
 // color("green")
 // translate([30, 0, 0])
