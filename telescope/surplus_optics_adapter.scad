@@ -7,29 +7,43 @@ proj_lens_ID = 46.0;
 proj_lens_inner_clr = 23.3;
 proj_lens_outer_clr = 5;
 
-eyepiece_OD = 24.47;
-eyepiece_ID = 21.7;
-eyepiece_inner_clr = 6.31;
-eyepiece_outer_clr = 22.1;
-
-// approx spacing between end of tubes is 40mm ("freespace gap")
-// max clearance would then be ~70mm
+eyepiece_OD = (31.51+31.68) / 2; // it has a slight taper, and we go for the midpoint
+eyepiece_ID = 27.11;
+eyepiece_inner_clr = 0; // optics extend completely to end of tube
+eyepiece_outer_clr = 29.6;
 
 /*
-      _    _
+     e_d   _
      / |  | \         \___ (inner) flat surface for mating with eyepiece
-    /  |  |  \        /
+    /  c  |  \        /
    /  /    \  \
-  /  /      \  \
+ f/  /      \  \
  |  /        \  |     \____ flat surface for mating with ID of projector lens
- |_/          \_|     /
+ a_b          \_|     /
 
 (diagram not to scale)
 */
 
+/*
+original 0.965" 6mm eyepiece:
+- approx spacing between end of tubes is 40mm ("freespace gap")
+- max clearance would then be ~70mm
+*/
+
+/*
+modification for new 1.25" erecting eyepiece.
+original adapter needs ~5-10mm to touch projection lens and new eyepiece while focused
+
+|----projection lens----|                  |--8 to 10mm--|
+                        |---orig adapter---|             |---new eyepiece----|
+                |--clr--|                                |--clr--|
+                        |---------"freespace_gap"--------|
+freespace_gap = 62.7 + 9mm = 69.7mm ~= 70mm
+*/
+
 module profile() {
     thickness = 2;
-    freespace_gap = 40;
+    freespace_gap = 70;
     proj_lens_flat_surface = proj_lens_inner_clr / 2;
     eyepiece_flat_surface = eyepiece_outer_clr / 2;
     points = [
