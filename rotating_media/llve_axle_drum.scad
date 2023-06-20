@@ -28,10 +28,10 @@ module end_cap_flange(length, diameter) {
             translate([0, 0, set_screw_height])
                 rotate([90, 0, 0])
                     cylinder(h=dia*4, r=set_screw_dia/2, center=true);
-            translate([0, dia/2, set_screw_height])
+            translate([0, dia/1.5, set_screw_height])
                 rotate([90, 0, 0])
                     cylinder(h=dia/2, r=set_screw_head_clr/2, center=true);
-            translate([0, -dia/2, set_screw_height])
+            translate([0, -dia/1.5, set_screw_height])
                 rotate([90, 0, 0])
                     cylinder(h=dia/2, r=set_screw_head_clr/2, center=true);
         }
