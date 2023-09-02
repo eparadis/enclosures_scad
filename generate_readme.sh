@@ -21,6 +21,12 @@ do
   
   # print a H2 title of the file name
   echo "## \`$FILE\`" >> $README
+
+  # print a link to the source code
+  echo >> $README
+  echo "source: [${FILE}](${FILE})" >> $README
+  echo >> $README
+
   # print an image tag
   echo "![$NAME](images/$NAME.png \"$NAME\")" >> $README
   # a blank line to trigger a markdown section
