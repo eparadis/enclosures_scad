@@ -18,8 +18,12 @@ for FILE in "${FILES[@]}"
 do
   NAME=`basename "$FILE" .scad`
   echo "processing $FILE '$NAME'"
-  echo "\`$FILE\`" >> $README
+  
+  # print a H2 title of the file name
+  echo "## \`$FILE\`" >> $README
+  # print an image tag
   echo "![$NAME](images/$NAME.png \"$NAME\")" >> $README
+  # a blank line to trigger a markdown section
   echo "" >> $README
 
   "$OPENSCAD" --colorscheme "Tomorrow Night" --projection o --viewall --autocenter -o "images/${NAME}.png" "$FILE"
