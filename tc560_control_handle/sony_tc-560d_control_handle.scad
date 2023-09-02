@@ -1,4 +1,4 @@
-﻿//!OpenSCAD
+//!OpenSCAD
 
 // control handle for a Sony TC-560D reel-to-reel tape recorder.
 // (this is the control that switches between play, stop, and fast wind - forward and reverse)
