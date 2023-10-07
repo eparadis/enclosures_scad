@@ -1,8 +1,14 @@
 //! OpenSCAD
 
-// made with blockscad3d very quickly ;)
+// originally made with blockscad3d very quickly, which is why the structure is so odd
 // see project: https://www.blockscad3d.com/community/projects/1244617
-// I printed their STL successfully
+// I printed their STL successfully, but decided to come back and refactor this to be customizable
+
+// valid between 30 and 80 mm
+headband_width = 48;
+// TODO tilt_angle = 0;
+
+module _stop_customizer() { }
 
 epsilon = 0.01;
 $fn = 20;
@@ -30,6 +36,7 @@ module SAS_Triangle_3D(s1, s2, a, h, valid) {
             invalid_triangle_arc(min(s1, s2) / 4, 0.5, a);
     }
 }
+
 module basic_shape() {
     k = 2;
     color([ 1, 0.8, 0 ]) {
@@ -38,9 +45,11 @@ module basic_shape() {
                 cube([ 15.875, 5, 44 ], center = false);
                 translate([ 0, 0, 36 ]) {
                     rotate([ 0, 90, 0 ]) {
-                        SAS_Triangle_3D(29.25+k, 68, 90, 15.875, true);
+                        SAS_Triangle_3D(29.25+k, headband_width+20, 90, 15.875, true);
                     }
                 }
+
+                // extra material for the lower fillet
                 translate([0, 4, 5]) {
                     cube([15.875, 5, 10], center = false);
                 }
@@ -54,7 +63,6 @@ module basic_shape() {
                     screw_clearance();
                 }
                 shelf_cutout();
-                // skeletonize_cutouts();
             }
         }
     }
@@ -62,7 +70,7 @@ module basic_shape() {
 
 module rounded_shelf_tip() {
     color([ 1, 0.8, 0 ]) {
-        translate([ 0, (48 + 10), (5 + 31.75) ]) {
+        translate([ 0, (headband_width + 10), (5 + 31.75) ]) {
             rotate([ 0, 90, 0 ]) {
                 cylinder(r1 = 5, r2 = 5, h = 15.875, center = false);
             }
@@ -83,17 +91,22 @@ module screw_clearance() {
 
 module shelf_cutout() {
     hull() {
+        // round where the upper side of the hook connects to the frame
         translate([ 0-epsilon, 10, (5 + 31.75) ]) {
             rotate([ 0, 90, 0 ]) {
                 cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
             }
         }
-        translate([ 0-epsilon, 48, (5 + 31.75) ]) {
+        
+        // the far inside edge of the hook
+        translate([ 0-epsilon, headband_width, (5 + 31.75) ]) {
             rotate([ 0, 90, 0 ]) {
                 cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
             }
         }
     }
+    
+    // round where the lower side of the hook connects to the frame
     translate([ 0-epsilon, 10-epsilon, 4 ]) {
         rotate([ 0, 90, 0 ]) {
             cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
@@ -101,42 +114,20 @@ module shelf_cutout() {
     }
 }
 
-module skeletonize_cutouts() {
-    slope = 29.25 / 68; // rise over run
-    zstart = 17.5;
-    for (i=[0:2]) {
-        translate([ 0-epsilon, 10+10*i, zstart+slope*10*i ]) {
-            rotate([ 0, 90, 0 ]) {
-                cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
-            }
-        }
-    }
-    translate([ 0-epsilon, 12, 26 ]) {
-        rotate([ 0, 90, 0 ]) {
-            cylinder(r1 = 2.5, r2 = 2.5, h = 15.875+2*epsilon, center = false);
-        }
-    }
-    translate([ 0-epsilon, 23, 29 ]) {
-        rotate([ 0, 90, 0 ]) {
-            cylinder(r1 = 2, r2 = 2, h = 15.875+2*epsilon, center = false);
-        }
-    }
-    translate([ 0-epsilon, 10+10*3, zstart+slope*8*3 ]) {
-        rotate([ 0, 90, 0 ]) {
-            cylinder(r1 = 2.5, r2 = 2.5, h = 15.875+2*epsilon, center = false);
-        }
-    }
+module hook() {
+  union() {
+      difference() {
+          basic_shape();
+
+          // trim the tip off the triangle
+          color([ 0.93, 0, 0 ]) {
+              translate([ 0-epsilon, headband_width+10, 30 ]) {
+                  cube([ 15.875+2*epsilon, 20, 10 ], center = false);
+              }
+          }
+      }
+      rounded_shelf_tip();
+  }
 }
 
-union() {
-    difference() {
-        basic_shape();
-
-        color([ 0.93, 0, 0 ]) {
-            translate([ 0-epsilon, 58, 30 ]) {
-                cube([ 15.875+2*epsilon, 20, 10 ], center = false);
-            }
-        }
-    }
-    rounded_shelf_tip();
-}
+hook();
