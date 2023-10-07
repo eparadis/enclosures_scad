@@ -37,7 +37,42 @@ module SAS_Triangle_3D(s1, s2, a, h, valid) {
     }
 }
 
-module basic_shape() {
+module orig_shape() {
+    module rounded_shelf_tip() {
+        color([ 1, 0.8, 0 ]) {
+            translate([ 0, (headband_width + 10), (5 + 31.75) ]) {
+                rotate([ 0, 90, 0 ]) {
+                    cylinder(r1 = 5, r2 = 5, h = 15.875, center = false);
+                }
+            }
+        }
+    }
+    
+    module shelf_cutout() {
+        hull() {
+            // round where the upper side of the hook connects to the frame
+            translate([ 0-epsilon, 10, (5 + 31.75) ]) {
+                rotate([ 0, 90, 0 ]) {
+                    cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
+                }
+            }
+            
+            // the far inside edge of the hook
+            translate([ 0-epsilon, headband_width, (5 + 31.75) ]) {
+                rotate([ 0, 90, 0 ]) {
+                    cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
+                }
+            }
+        }
+        
+        // round where the lower side of the hook connects to the frame
+        translate([ 0-epsilon, 10-epsilon, 4 ]) {
+            rotate([ 0, 90, 0 ]) {
+                cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
+            }
+        }
+    }
+
     k = 2;
     color([ 1, 0.8, 0 ]) {
         difference() {
@@ -56,25 +91,17 @@ module basic_shape() {
             }
 
             union() {
-                translate([ (15.875 / 2), 0, 6.35 ]) {
-                    screw_clearance();
-                }
-                translate([ (15.875 / 2), 0, (6.35 + 31.75) ]) {
-                    screw_clearance();
-                }
                 shelf_cutout();
+                
+                // trim the tip off the triangle
+                color([ 0.93, 0, 0 ]) {
+                    translate([ 0-epsilon, headband_width+10, 30 ]) {
+                        cube([ 15.875+2*epsilon, 20, 10 ], center = false);
+                    }
+                }
             }
         }
-    }
-}
-
-module rounded_shelf_tip() {
-    color([ 1, 0.8, 0 ]) {
-        translate([ 0, (headband_width + 10), (5 + 31.75) ]) {
-            rotate([ 0, 90, 0 ]) {
-                cylinder(r1 = 5, r2 = 5, h = 15.875, center = false);
-            }
-        }
+        rounded_shelf_tip();
     }
 }
 
@@ -89,45 +116,13 @@ module screw_clearance() {
     }
 }
 
-module shelf_cutout() {
-    hull() {
-        // round where the upper side of the hook connects to the frame
-        translate([ 0-epsilon, 10, (5 + 31.75) ]) {
-            rotate([ 0, 90, 0 ]) {
-                cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
-            }
-        }
-        
-        // the far inside edge of the hook
-        translate([ 0-epsilon, headband_width, (5 + 31.75) ]) {
-            rotate([ 0, 90, 0 ]) {
-                cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
-            }
-        }
-    }
-    
-    // round where the lower side of the hook connects to the frame
-    translate([ 0-epsilon, 10-epsilon, 4 ]) {
-        rotate([ 0, 90, 0 ]) {
-            cylinder(r1 = 5, r2 = 5, h = 15.875+2*epsilon, center = false);
-        }
-    }
-}
 
 module hook() {
-  union() {
-      difference() {
-          basic_shape();
-
-          // trim the tip off the triangle
-          color([ 0.93, 0, 0 ]) {
-              translate([ 0-epsilon, headband_width+10, 30 ]) {
-                  cube([ 15.875+2*epsilon, 20, 10 ], center = false);
-              }
-          }
-      }
-      rounded_shelf_tip();
-  }
+    difference() {
+        orig_shape();
+        translate([ (15.875 / 2), 0, 6.35 ]) screw_clearance();
+        translate([ (15.875 / 2), 0, (6.35 + 31.75) ]) screw_clearance();
+    }
 }
 
 hook();
