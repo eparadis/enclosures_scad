@@ -6,7 +6,7 @@
 
 include <BOSL2/std.scad>
 
-// valid between 30 and 80 mm
+// Must be greater than 5.5. Above 120 the end might get fragile
 headband_width = 48;
 // TODO tilt_angle = 0;
 
@@ -47,10 +47,11 @@ module new_hook(width) {
     }
 }
 
-translate([20, 0, 0])
+//translate([20, 0, 0])
 color([ 0, 1, 1])
 new_hook(headband_width);
 
-for(i = [20, 40, 60, 80, 100, 120]) {
-    color( [i/120, 0.5, 0.5]) translate([-i*2, 0, 0]) new_hook(i);
-}
+// uncomment to render a whole family of hooks
+//for(i = [20, 40, 60, 80, 100, 120]) {
+//    color( [i/120, 0.5, 0.5]) translate([-i*2, 0, 0]) new_hook(i);
+//}
