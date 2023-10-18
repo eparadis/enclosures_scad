@@ -112,7 +112,7 @@ module place_on_back_surface(u, v) {
   two_AAA_batteries();
 
 difference() {
-  linear_extrude(height = front_face_width)
+  linear_extrude(height = front_face_width, convexity=10)
     side_profile_hollow();
   screen_cutout();
 }
